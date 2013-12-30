@@ -8,7 +8,7 @@
     <ProjectGuid>f496d7e3-bc0f-449f-b3b7-9f1b73278c87</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>ProjToTemplate</RootNamespace>
-    <AssemblyName>ProjToTemplate</AssemblyName>
+    <AssemblyName>VsTemplar</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <Name>ProjToTemplate</Name>
     <TargetFrameworkProfile />

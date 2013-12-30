@@ -21,33 +21,33 @@ open System
 
 // The name of the project 
 // (used by attributes in AssemblyInfo, name of a NuGet package and directory in 'src')
-let project = "FSharp.ProjectTemplate"
+let project = "VsTemplar"//"FSharp.ProjectTemplate"
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
-let summary = "A short summary of your project."
+let summary = "A tool that generates *.vstemplate file based on provided Visual Studio project file *.csproj, *.fsproj, etc."
 
 // Longer description of the project
 // (used as a description for NuGet package; line breaks are automatically cleaned up)
 let description = """
-  A lengthy description of your project. 
-  This can have multiple lines and will be cleaned up. """
+  A tool that generates *.vstemplate file based on 
+  provided Visual Studio project file *.csproj, *.fsproj, etc."""
 // List of author names (for NuGet package)
-let authors = [ "Your Name" ]
+let authors = [ "Artur S" ]
 // Tags for your project (for NuGet package)
-let tags = "F# fsharp tags which describe your project"
+let tags = "vstemplate template fsharp "
 
 // File system information 
 // (<solutionFile>.sln is built during the building process)
-let solutionFile  = "FSharp.ProjectScaffold"
+let solutionFile  = "VsTemplar"
 // Pattern specifying assemblies to be tested using NUnit
-let testAssemblies = ["tests/*/bin/*/FSharp.ProjectTemplate*Tests*.dll"]
+let testAssemblies = ["tests/*/bin/*/VsTemplar*Tests*.dll"]
 
 // Git configuration (used for publishing documentation in gh-pages branch)
 // The profile where the project is posted 
-let gitHome = "https://github.com/pblasucci"
+let gitHome = "https://artur_s@bitbucket.org/artur_s"
 // The name of the project on GitHub
-let gitName = "FSharp.ProjectScaffold"
+let gitName = "vstemplar"
 
 // --------------------------------------------------------------------------------------
 // END TODO: The rest of the file includes standard build steps 
@@ -87,7 +87,8 @@ Target "CleanDocs" (fun _ ->
 Target "Build" (fun _ ->
     { BaseDirectory = __SOURCE_DIRECTORY__
       Includes = [ solutionFile +       ".sln"
-                   solutionFile + ".Tests.sln" ]
+//                   solutionFile + ".Tests.sln" 
+                    ]
       Excludes = [] } 
     |> MSBuildRelease "" "Rebuild"
     |> ignore
