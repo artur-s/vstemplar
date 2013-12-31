@@ -78,7 +78,7 @@ Target "Clean" (fun _ ->
 )
 
 Target "CleanDocs" (fun _ ->
-    CleanDirs ["docs/output"]
+        CleanDirs ["docs/output"]
 )
 
 // --------------------------------------------------------------------------------------
@@ -90,7 +90,7 @@ Target "Build" (fun _ ->
 //                   solutionFile + ".Tests.sln" 
                     ]
       Excludes = [] } 
-    |> MSBuildRelease "" "Rebuild"
+    |> MSBuildRelease "bin" "Rebuild"
     |> ignore
 )
 
@@ -173,13 +173,13 @@ Target "All" DoNothing
   ==> "RestorePackages"
   ==> "AssemblyInfo"
   ==> "Build"
-  ==> "RunTests"
+//  ==> "RunTests"
   ==> "All"
 
 "All" 
   ==> "CleanDocs"
-  ==> "GenerateDocs"
-  ==> "ReleaseDocs"
+//  ==> "GenerateDocs"
+//  ==> "ReleaseDocs"
   ==> "NuGet"
   ==> "Release"
 
