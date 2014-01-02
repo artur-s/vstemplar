@@ -14,7 +14,7 @@
     <releaseNotes>@releaseNotes@</releaseNotes>
     <copyright>Copyright 2013</copyright>
     <tags>@tags@</tags>
-    <dependencies />
+		@dependencies@
   </metadata>
   <files>
     <file src="..\bin\VsTemplar.dll" target="lib/net40" />

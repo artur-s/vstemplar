@@ -6,3 +6,6 @@
 
 #### 0.0.2-beta - October 24 2013
 * updated license URL
+
+#### 0.0.3-beta - October 24 2013
+* added missing dependencies
