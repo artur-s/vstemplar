@@ -1,14 +1,14 @@
 ﻿module Run
 
-#r "./bin/ProjToTemplate.dll"
+#r "./bin/VsTemplar.dll"
 
 open System
-open Templarius
+open VsTemplar
 
 // check
-//Environment.CurrentDirectory <- "D:/Projects/TFS/w3/Platform/Dev/IQ.Platform.WebApi.Template"
-let csProgFileLocation = "D:/Projects/TFS/w3/Platform/Dev/IQ.Platform.WebApi.Template/TemplatesBackup/source_PutYourApiNameHere/src/PutYourApiNameHere.WebApi/PutYourApiNameHere.WebApi.csproj"
+//Environment.CurrentDirectory <- ""
+let csProgFileLocation = ".\YourProjectHere.csproj"
 let target = @"D:\Temp\MyTemplate.vstemplate"
-Templarius.createVSTemplate csProgFileLocation target
+VsTemplate.create csProgFileLocation target
 
 

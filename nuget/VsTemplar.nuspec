@@ -17,7 +17,7 @@
     <dependencies />
   </metadata>
   <files>
-    <file src="..\bin\VsTemplar.dll" target="lib/net45" />
-	<file src="..\bin\VsTemplar.xml" target="lib/net45" />
+    <file src="..\bin\VsTemplar.dll" target="lib/net40" />
+		<file src="..\bin\VsTemplar.xml" target="lib/net40" />
   </files>
 </package>
