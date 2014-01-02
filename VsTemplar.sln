@@ -6,6 +6,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C837A994-D6D3-4C1A-8313-6D419593EF7D}"
 	ProjectSection(SolutionItems) = preProject
 		build.fsx = build.fsx
+		nuget\VsTemplar.nuspec = nuget\VsTemplar.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{825C49F8-2A66-472F-B0FA-AEFCCF60652E}"

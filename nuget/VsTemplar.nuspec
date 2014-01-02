@@ -5,8 +5,8 @@
     <version>@build.number@</version>
     <authors>@authors@</authors>
     <owners>@authors@</owners>
-    <licenseUrl>https://github.com/fsprojects/FSharp.ProjectScaffold/blob/master/LICENSE.txt</licenseUrl>
-    <projectUrl>https://github.com/fsprojects/FSharp.ProjectScaffold/</projectUrl>
+    <licenseUrl>http://unlicense.org/UNLICENSE</licenseUrl>
+    <!-- <projectUrl>https://github.com/fsprojects/FSharp.ProjectScaffold/</projectUrl> -->
     <!-- <iconUrl>https://raw.github.com/fsharp/FSharp.ProjectScaffold/master/nuget/logo.png</iconUrl> -->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>@summary@</summary>
