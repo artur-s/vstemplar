@@ -25,13 +25,14 @@ let project = "VsTemplar"//"FSharp.ProjectTemplate"
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
-let summary = "A tool that generates *.vstemplate file based on provided Visual Studio project file *.csproj, *.fsproj, etc."
+let summary = "Generates *.vstemplate file based on VS project file: *.csproj, *.fsproj, etc."
 
 // Longer description of the project
 // (used as a description for NuGet package; line breaks are automatically cleaned up)
 let description = """
   A tool that generates *.vstemplate file based on 
-  provided Visual Studio project file *.csproj, *.fsproj, etc."""
+  provided Visual Studio project file (*.csproj, *.fsproj, etc.)"""
+
 // List of author names (for NuGet package)
 let authors = [ "Artur S" ]
 // Tags for your project (for NuGet package)
