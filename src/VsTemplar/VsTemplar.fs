@@ -94,7 +94,7 @@ module VsTemplate =
         let addProjectFile targetFileName (projectOrFolderElement:XElement) =
             let item = destTemplate.TemplateContent.Project.GetProjectItems() |> Seq.head |> (fun i -> new XElement(i.XElement))
                         |> setXAttrValue "TargetFileName" targetFileName
-            printfn "file added %s" targetFileName
+            //printfn "file added %s" targetFileName
             item.Value <- targetFileName
             addChildXElem item projectOrFolderElement
 
@@ -104,7 +104,7 @@ module VsTemplate =
                         |> setXAttrValue "TargetFolderName" targetFolderName
             folder.RemoveNodes()
             addChildXElem folder projectOrFolderElement |> ignore
-            printfn "folder added %s" targetFolderName
+//            printfn "folder added %s" targetFolderName
             folder
 
     //    addProjectFile "packages.config" project |> ignore
@@ -153,13 +153,13 @@ module VsTemplate =
 
             let allItems sourceProj = 
                 seq{
-                    printfn "Compiles:" 
+//                    printfn "Compiles:" 
                     yield! (getCompiles sourceProj)
-                    printfn "Contents:" 
+//                    printfn "Contents:" 
                     yield! (getContents sourceProj)
-                    printfn "Nones:" 
+//                    printfn "Nones:" 
                     yield! (getNones sourceProj)
-                    printfn "EmbeddedResources:" 
+//                    printfn "EmbeddedResources:" 
                     yield! (getEmbeddedResources sourceProj)
     //                yield! (getOtherFolders sourceProj)
                     }
