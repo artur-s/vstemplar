@@ -9,3 +9,6 @@
 
 #### 0.0.3-beta - October 24 2013
 * added missing dependencies
+
+#### 0.0.4-beta - January 3 2014
+* added `FSharp.Data` references to tools folder

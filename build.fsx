@@ -53,6 +53,8 @@ let gitName = "vstemplar"
 // --------------------------------------------------------------------------------------
 // END TODO: The rest of the file includes standard build steps 
 // --------------------------------------------------------------------------------------
+let buildDir = "./bin/"
+let nugetDir = "./nuget/"
 let packagesDir = "./packages/"
 
 // Read additional information from the release notes document
@@ -125,7 +127,10 @@ Target "NuGet" (fun _ ->
                                  .Replace("\n", "")
                                  .Replace("  ", " ")
 
-    let fsharpDataVersion = GetPackageVersion packagesDir "FSharp.Data"
+
+//    let nugetToolsDir = nugetDir @@ "tools"
+//    !! (buildDir @@ "**/*.dll") |> Copy nugetToolsDir
+
     NuGet (fun p -> 
         { p with   
             Authors = authors
@@ -138,8 +143,9 @@ Target "NuGet" (fun _ ->
             OutputPath = "bin"
             AccessKey = getBuildParamOrDefault "nugetkey" ""
             Publish = hasBuildParam "nugetkey"
-            Dependencies = ["FSharp.Data", fsharpDataVersion] })
-        ("nuget/" + project + ".nuspec")
+//            Dependencies = ["FSharp.Data", GetPackageVersion packagesDir "FSharp.Data"]
+            })
+        (nugetDir + project + ".nuspec")
 )
 
 // --------------------------------------------------------------------------------------

@@ -16,8 +16,9 @@
     <tags>@tags@</tags>
 		@dependencies@
   </metadata>
-  <files>
+   <files>
     <file src="..\bin\VsTemplar.dll" target="lib/net40" />
-		<file src="..\bin\VsTemplar.xml" target="lib/net40" />
-  </files>
+	<file src="..\bin\VsTemplar.xml" target="lib/net40" />
+	<file src="..\bin\*.dll" target="tools" />
+  </files> 
 </package>
