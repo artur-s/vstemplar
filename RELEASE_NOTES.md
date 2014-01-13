@@ -12,3 +12,6 @@
 
 #### 0.0.4-beta - January 3 2014
 * added `FSharp.Data` references to tools folder
+
+#### 0.0.5-beta - January 13 2014
+* added missing `SampleData` folder
