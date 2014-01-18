@@ -15,3 +15,6 @@
 
 #### 0.0.5-beta - January 13 2014
 * added missing `SampleData` folder
+
+#### 0.0.6-beta - January 18 2014
+* grouped template creation parameters in a record
