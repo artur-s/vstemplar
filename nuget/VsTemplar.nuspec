@@ -20,6 +20,5 @@
     <file src="..\bin\VsTemplar.dll" target="lib/net40" />
 		<file src="..\bin\VsTemplar.xml" target="lib/net40" />
 		<file src="..\bin\*.dll" target="tools" />
-		<file src="..\bin\SampleData\*.*" target="tools/SampleData" />
   </files> 
 </package>

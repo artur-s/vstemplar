@@ -1,6 +1,6 @@
 ﻿namespace VsTemplar
 
-module ProjectContent =
+module internal ProjectContent =
 
     open System
 

@@ -1,16 +1,17 @@
 ﻿// http://trelford.com/blog/post/F-XML-Comparison-(XElement-vs-XmlDocument-vs-XmlReaderXmlWriter-vs-Discriminated-Unions).aspx
 namespace VsTemplar
 
+#if INTERACTIVE
+#r "System.Xml.Linq"
+#r "../../packages/FSharp.Data.1.1.10/lib/net40/FSharp.Data.dll"
+#endif
+
 module VsTemplate =
 
-//#r "System.Xml.Linq"
-//#r "../packages/FSharp.Data.1.1.10/lib/net40/FSharp.Data.dll"
-
     open System
-    open FSharp.Data
     open System.Linq
     open System.Xml.Linq
-
+    open FSharp.Data
 
     // ------------------------------------------------------------------------------------------------------
     let ofOption = function | null -> None | i -> Some i
@@ -49,20 +50,25 @@ module VsTemplate =
     //| x -> failwith "cannot read that property"
 
     // ------------------------------------------------------------------------------------------------------
+    
+    type Parameters =
+        {   VsProjFileLocation : string
+            Description : string
+            Target: string }
+    
+    type CsProject = XmlProvider<SampleData.VsProject>
+    type Template = XmlProvider<SampleData.VsTemplate>
+    
 
-    type CsProject = XmlProvider<"./SampleData/Sample.csproj.xml">
-    type Template = XmlProvider<"./SampleData/Sample.vstemplate.xml">
+    let generateVSTemplate (parameters:Parameters) =
 
 
-    let generateVSTemplate (csProgFileLocation:string) =
-
-
-        let sourceProj = CsProject.Load(csProgFileLocation)
+        let sourceProj = CsProject.Load(parameters.VsProjFileLocation)
     
         let projectName = 
             match sourceProj.GetPropertyGroups() |> Seq.tryPick (fun pg -> pg.RootNamespace) with
             | Some pn -> pn
-            | _ -> failwithf "Cannot find project name in %s" csProgFileLocation
+            | _ -> failwithf "Cannot find project name in %s" parameters.VsProjFileLocation
 
 
         let destTemplate = Template.GetSample()
@@ -75,7 +81,9 @@ module VsTemplate =
         dest.TemplateData.XElement 
         |> setXElemValueNS (xNameThis "Name") projectName
         |> setXElemValueNS (xNameThis "DefaultName") projectName
-        |> setXElemValueNS (xNameThis "Description") (sprintf "this is template under construction for %s" projectName)
+        |> setXElemValueNS (xNameThis "Description") ( match parameters.Description with
+                                                        | null | "" -> sprintf "template generated from %s project" projectName
+                                                        | d -> d)
         |> ignore
 
         // <TemplateContent> element
@@ -178,7 +186,15 @@ module VsTemplate =
         dest.XElement
 
 
-    let create csProgFileLocation (target:string) =
-        let template = generateVSTemplate csProgFileLocation
-        template.Save(target)
+    let create
+        (getParameters:Parameters -> Parameters) =
+        
+        let defaults = { 
+            VsProjFileLocation = null
+            Description = null
+            Target = null}
+        let parameters = getParameters defaults
+        let template = generateVSTemplate parameters
+        template.Save(parameters.Target)
+
 

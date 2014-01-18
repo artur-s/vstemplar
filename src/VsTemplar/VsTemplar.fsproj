@@ -40,15 +40,11 @@
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets" Condition=" Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')" />
   <ItemGroup>
     <Compile Include="ProjectContent.fs" />
+    <Compile Include="SampleData.fs" />
+    <Compile Include="VsTemplar.fsi" />
     <Compile Include="VsTemplar.fs" />
     <None Include="Run.fsx" />
     <None Include="packages.config" />
-    <Content Include="SampleData\Sample.csproj.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleData\Sample.vstemplate.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Data">
