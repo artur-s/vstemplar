@@ -16,6 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D7D3ED08
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "VsTemplar", "src\VsTemplar\VsTemplar.fsproj", "{F496D7E3-BC0F-449F-B3B7-9F1B73278C87}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2857C2DC-A4EF-4440-A79E-91B14F259443}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

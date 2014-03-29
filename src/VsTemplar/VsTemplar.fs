@@ -66,7 +66,7 @@ module VsTemplate =
         let sourceProj = CsProject.Load(parameters.VsProjFileLocation)
     
         let projectName = 
-            match sourceProj.GetPropertyGroups() |> Seq.tryPick (fun pg -> pg.RootNamespace) with
+            match sourceProj.PropertyGroups |> Seq.tryPick (fun pg -> pg.RootNamespace) with
             | Some pn -> pn
             | _ -> failwithf "Cannot find project name in %s" parameters.VsProjFileLocation
 
@@ -100,14 +100,14 @@ module VsTemplate =
         |> ignore
 
         let addProjectFile targetFileName (projectOrFolderElement:XElement) =
-            let item = destTemplate.TemplateContent.Project.GetProjectItems() |> Seq.head |> (fun i -> new XElement(i.XElement))
+            let item = destTemplate.TemplateContent.Project.ProjectItems |> Seq.head |> (fun i -> new XElement(i.XElement))
                         |> setXAttrValue "TargetFileName" targetFileName
             //printfn "file added %s" targetFileName
             item.Value <- targetFileName
             addChildXElem item projectOrFolderElement
 
         let addProjectFolder targetFolderName (projectOrFolderElement:XElement) =
-            let folder = destTemplate.TemplateContent.Project.GetFolders() |> Seq.head |> (fun i -> new XElement(i.XElement))
+            let folder = destTemplate.TemplateContent.Project.Folders |> Seq.head |> (fun i -> new XElement(i.XElement))
                         |> setXAttrValue "Name" targetFolderName
                         |> setXAttrValue "TargetFolderName" targetFolderName
             folder.RemoveNodes()
@@ -119,33 +119,33 @@ module VsTemplate =
     //    addProjectFile "GenericTransportMapper.cs" project |> ignore
     //    addProjectFolder "Security" project |> ignore
    
-        let processCsProjectItems (sourceProj:CsProject.DomainTypes.Project) vsproject =
+        let processCsProjectItems (sourceProj:CsProject.Project) vsproject =
 
         
-            let getCompiles (sourceProj:CsProject.DomainTypes.Project) = 
-                match sourceProj.GetItemGroups() |> Seq.tryFind (fun ig -> ig.GetCompiles().Any()) with
-                | Some ig -> ig.GetCompiles() |> Array.map (fun c -> c.Include) 
+            let getCompiles (sourceProj:CsProject.Project) = 
+                match sourceProj.ItemGroups |> Seq.tryFind (fun ig -> ig.Compiles.Any()) with
+                | Some ig -> ig.Compiles |> Array.map (fun c -> c.Include) 
                 | _ -> [||]
 
-            let getContents (sourceProj:CsProject.DomainTypes.Project) = 
-                match sourceProj.GetItemGroups() |> Seq.tryFind (fun ig -> ig.GetContents().Any()) with
-                | Some ig -> ig.GetContents() |> Array.map (fun c -> c.Include) 
+            let getContents (sourceProj:CsProject.Project) = 
+                match sourceProj.ItemGroups |> Seq.tryFind (fun ig -> ig.Contents.Any()) with
+                | Some ig -> ig.Contents |> Array.map (fun c -> c.Include) 
                 | _ -> [||]
         
     //        TODO: generate as folders (currently as item)
-            let getOtherFolders (sourceProj:CsProject.DomainTypes.Project) = 
-                match sourceProj.GetItemGroups() |> Seq.tryFind (fun ig -> ig.GetFolders().Any()) with
-                | Some ig -> ig.GetFolders() |> Array.map (fun c -> c.Include) 
+            let getOtherFolders (sourceProj:CsProject.Project) = 
+                match sourceProj.ItemGroups |> Seq.tryFind (fun ig -> ig.Folders.Any()) with
+                | Some ig -> ig.Folders |> Array.map (fun c -> c.Include) 
                 | _ -> [||]
 
-            let getNones (sourceProj:CsProject.DomainTypes.Project) = 
-                match sourceProj.GetItemGroups() |> Seq.tryFind (fun ig -> ig.GetNones().Any()) with
-                | Some ig -> ig.GetNones() |> Array.map (fun c -> c.Include) 
+            let getNones (sourceProj:CsProject.Project) = 
+                match sourceProj.ItemGroups |> Seq.tryFind (fun ig -> ig.Nones.Any()) with
+                | Some ig -> ig.Nones |> Array.map (fun c -> c.Include) 
                 | _ -> [||]
 
-            let getEmbeddedResources (sourceProj:CsProject.DomainTypes.Project) = 
-                match sourceProj.GetItemGroups() |> Seq.tryFind (fun ig -> ig.GetEmbeddedResources().Any()) with
-                | Some ig -> ig.GetEmbeddedResources() |> Array.map (fun c -> c.Include) 
+            let getEmbeddedResources (sourceProj:CsProject.Project) = 
+                match sourceProj.ItemGroups |> Seq.tryFind (fun ig -> ig.EmbeddedResources.Any()) with
+                | Some ig -> ig.EmbeddedResources |> Array.map (fun c -> c.Include) 
                 | _ -> [||]
         
             let addProjectContent projectContent =
@@ -185,15 +185,15 @@ module VsTemplate =
         let items = processCsProjectItems sourceProj project
         dest.XElement
 
-
-    let create
-        (getParameters:Parameters -> Parameters) =
+    
+    let Create
+        (setParams:Parameters -> Parameters) =
         
         let defaults = { 
             VsProjFileLocation = null
             Description = null
             Target = null}
-        let parameters = getParameters defaults
+        let parameters = setParams defaults
         let template = generateVSTemplate parameters
         template.Save(parameters.Target)
 

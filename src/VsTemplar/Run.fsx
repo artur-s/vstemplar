@@ -9,6 +9,9 @@ open VsTemplar
 //Environment.CurrentDirectory <- ""
 let csProgFileLocation = ".\YourProjectHere.csproj"
 let target = @"D:\Temp\MyTemplate.vstemplate"
-VsTemplate.create csProgFileLocation target
+
+
+VsTemplate.Create (fun p -> {p with VsProjFileLocation = csProgFileLocation
+                                    Target = target})
 
 
