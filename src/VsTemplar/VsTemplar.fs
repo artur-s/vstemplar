@@ -3,7 +3,7 @@ namespace VsTemplar
 
 #if INTERACTIVE
 #r "System.Xml.Linq"
-#r "../../packages/FSharp.Data.1.1.10/lib/net40/FSharp.Data.dll"
+#r "../../packages/FSharp.Data.2.0.4/lib/net40/FSharp.Data.dll"
 #endif
 
 module VsTemplate =
@@ -120,7 +120,6 @@ module VsTemplate =
     //    addProjectFolder "Security" project |> ignore
    
         let processCsProjectItems (sourceProj:CsProject.Project) vsproject =
-
         
             let getCompiles (sourceProj:CsProject.Project) = 
                 match sourceProj.ItemGroups |> Seq.tryFind (fun ig -> ig.Compiles.Any()) with

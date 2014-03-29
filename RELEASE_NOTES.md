@@ -18,3 +18,7 @@
 
 #### 0.0.6-beta - January 18 2014
 * grouped template creation parameters in a record
+
+#### 0.0.7-beta - March 29 2014
+* updated Fsharp.Data nuget package
+
