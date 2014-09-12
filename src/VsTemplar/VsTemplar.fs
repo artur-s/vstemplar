@@ -76,7 +76,7 @@ module VsTemplate =
         // dest.XElement.ToString()
         // destTemplate.XElement.ToString()
 
-        let xNameThis name = xNameNS name destTemplate.Xmlns
+        let xNameThis name = xNameNS name (destTemplate.XElement.GetDefaultNamespace().NamespaceName) // Xmlns
 
         dest.TemplateData.XElement 
         |> setXElemValueNS (xNameThis "Name") projectName
