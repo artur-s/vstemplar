@@ -18,3 +18,6 @@ module VsTemplate =
     ///                                         Target =  @"D:\Temp\MyTemplate.vstemplate"})
     ///
     val Create : setParams:(Parameters -> Parameters) -> unit
+
+
+//    val 
