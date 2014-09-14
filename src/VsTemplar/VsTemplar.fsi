@@ -2,7 +2,7 @@
 
 module VsTemplate =
     
-    type Parameters =
+    type MetadataCreationParameters =
         {   VsProjFileLocation : string
             Description : string
             Target : string }
@@ -14,10 +14,20 @@ module VsTemplate =
     /// 
     /// ## Sample usage
     ///
-    ///     VsTemplate.create (fun p -> {p with VsProjFileLocation = ".\YourProjectHere.csproj"
+    ///     VsTemplate.CreateMetadata (fun p -> {p with VsProjFileLocation = ".\YourProjectHere.csproj"
     ///                                         Target =  @"D:\Temp\MyTemplate.vstemplate"})
     ///
-    val Create : setParams:(Parameters -> Parameters) -> unit
+    val CreateMetadata : setParams:(MetadataCreationParameters -> MetadataCreationParameters) -> unit
 
+    //TODO:
+    type TemplateExportParameters = 
+        {   SourceProjectDirectory : string
+            TargetDirectory : string }
 
-//    val 
+    //TODO: update usage sample
+    /// Creates zipped template file from source project.
+    /// ## Parameters
+    /// 
+    ///  - `setParams` - Function used to update the default Parameters value.
+    /// 
+    val ExportAsTemplate : setParams:(TemplateExportParameters -> TemplateExportParameters) -> unit 
