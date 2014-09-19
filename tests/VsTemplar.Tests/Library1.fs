@@ -1,3 +1,0 @@
-﻿namespace VsTemplar.Tests
-
-

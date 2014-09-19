@@ -219,7 +219,9 @@ module VsTemplate =
 
         //TODO: find subdirectories containing VS project file: *.csproj, *.fsproj, *.vbproj
         let sourceProjectsDirs = 
-            !! (parameters.SourceProjectDirectory @@ @"/*/" ) -- @"/packages/"
+            !! (parameters.SourceProjectDirectory @@ @"/*/" )
+                -- @"/packages/"
+                -- @"/bin/"
             
 
         // TODO: support multible. Single project for now
