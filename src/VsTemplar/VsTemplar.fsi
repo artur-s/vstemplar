@@ -17,7 +17,7 @@ module VsTemplate =
     ///     VsTemplate.CreateMetadata (fun p -> {p with VsProjFileLocation = ".\YourProjectHere.csproj"
     ///                                         Target =  @"D:\Temp\MyTemplate.vstemplate"})
     ///
-    val CreateMetadata : setParams:(MetadataCreationParameters -> MetadataCreationParameters) -> unit
+    val CreateMetadataVsTemplateMetadata : setParams:(MetadataCreationParameters -> MetadataCreationParameters) -> unit
 
     //TODO:
     type TemplateExportParameters = 

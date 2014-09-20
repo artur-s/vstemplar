@@ -186,7 +186,7 @@ module VsTemplate =
         dest.XElement
 
     
-    let CreateMetadata
+    let CreateMetadataVsTemplateMetadata
         (setParams:MetadataCreationParameters -> MetadataCreationParameters) =
         
         let defaults = { 
@@ -218,7 +218,6 @@ module VsTemplate =
         let tempZip = source + "/" + (Path.GetFileName destination)
         printfn "tempZip: %s" tempZip
         let files = !! (source @@ "**/*")
-        let tmpFiles = files |> List.ofSeq
         try
             ZipHelper.Zip source tempZip files
         with
@@ -249,25 +248,27 @@ module VsTemplate =
             match sourceProjectsDirs |> List.ofSeq with
             | sd::_ -> sd
             | _ -> invalidArg "setParams.SourceProjecDirectory" "Source project location does not contain any VS projects"
-        
-        let sourceProjectDir = Path.GetDirectoryName progFileLocation
+
+        let dirPath filePath = Path.GetDirectoryName filePath
+        let fileName filePath = Path.GetFileName filePath
+        let extension file = Path.GetExtension file
+
+        let sourceProjectDir = dirPath progFileLocation
 
         let templatesDestination = 
             match parameters.TargetDirectory with
             | null -> parameters.SourceProjectDirectory
-            | tg when (Path.GetExtension tg).Length > 0 -> tg
+            | tg when (extension tg).Length > 0 -> tg
             //TODO: for single project templates, default name of zip file should be the same as project name        
-            | tg -> Path.Combine(tg, "Template.zip")
+            | tg -> tg @@ "Template.zip" //Path.Combine(tg, "Template.zip")
 
         let exportedTemplatesTempDir = sprintf "%s%s%A" (Path.GetTempPath()) "VsTemplar_" (Guid.NewGuid())
         // TODO: temp directory in current location
-        let targetDir = (exportedTemplatesTempDir @@ (Path.GetFileName(Path.GetDirectoryName(progFileLocation)))) 
+        let targetDir = (exportedTemplatesTempDir @@ (fileName sourceProjectDir))
         Directory.CreateDirectory targetDir |> ignore
-        let targetProgFileName = Path.GetFileName(progFileLocation)
+        let targetProgFileName = fileName progFileLocation
         let targetProgFileLocation = targetDir @@ targetProgFileName
-
-        let getDirPath filePath = Path.GetDirectoryName filePath
-
+        
       
         let copyProjectFiles sourceDir targetDir =
             Fake.FileHelper.CopyDir targetDir sourceDir allFiles |> ignore
@@ -278,12 +279,13 @@ module VsTemplate =
         let tempTarget = targetDir @@ "MyTemplate.vstemplate"
         tempTarget |> printfn "%s"
 
-        CreateMetadata (fun p -> {p with VsProjFileLocation = progFileLocation
-                                         Target = tempTarget})
+        CreateMetadataVsTemplateMetadata (fun p -> {p with 
+                                                        VsProjFileLocation = progFileLocation
+                                                        Target = tempTarget})
 
         replaceProjectName targetProgFileLocation
 
-        getDirPath templatesDestination |> Directory.CreateDirectory |> ignore
+        dirPath templatesDestination |> Directory.CreateDirectory |> ignore
         zipTemplateTo exportedTemplatesTempDir templatesDestination
 
         //TODO: clear after copying
