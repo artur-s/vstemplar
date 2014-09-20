@@ -13,8 +13,9 @@ let sourceProjectDir = "C:/Projects/TFS/Git/MyProject/Src" // source project dir
 let templatesDestination = "D:/Temp/ProjectTemplates/Template.zip" // user should provide
 
 
-VsTemplate.CreateMetadata (fun p -> {p with VsProjFileLocation = "C:/Projects/Git/MyProject/Src/MyProject.Common/MyProject.Common.csproj"
-                                            Target = "template.vstemplate"})
+VsTemplate.CreateMetadataVsTemplateMetadata (fun p -> {p with 
+                                                        VsProjFileLocation = "C:/Projects/Git/MyProject/Src/MyProject.Common/MyProject.Common.csproj"
+                                                        Target = "template.vstemplate"})
 
 // almost ready
 VsTemplate.ExportAsTemplate (fun p -> {p with 

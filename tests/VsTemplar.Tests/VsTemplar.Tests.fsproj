@@ -62,9 +62,10 @@
   </Target>
   <ItemGroup>
     <Compile Include="UnquoteAssertionsAliases.fs" />
-    <Compile Include="VsTemplarTests.fs" />
     <Content Include="packages.config" />
     <Content Include="app.config" />
+    <Compile Include="CreateVsTemplateMetadataTests.fs" />
+    <Compile Include="ExportAsTemplateTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
