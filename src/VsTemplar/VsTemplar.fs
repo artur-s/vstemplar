@@ -78,6 +78,16 @@ module VsTemplate =
             | Some pn -> pn
             | _ -> failwithf "Cannot find project name in %s" parameters.VsProjFileLocation
 
+        // http://msdn.microsoft.com/en-us/library/5we0w25d.aspx
+        let projectType =
+            match System.IO.Path.GetExtension parameters.VsProjFileLocation with
+            | ext when ext.Length > 0 ->
+                match ext with
+                | ".csproj" -> "CSharp"
+                | ".fsproj" -> "FSharp"
+                | ".vbproj" -> "VisualBasic"
+                | _ -> failwith "Not supported project type"
+            | _ -> failwith "Cannot determine Visual Studio project type"
 
         let destTemplate = Template.GetSample()
         let dest = Template.GetSample()
@@ -92,6 +102,7 @@ module VsTemplate =
         |> setXElemValueNS (xNameThis "Description") ( match parameters.Description with
                                                         | null | "" -> sprintf "template generated from %s project" projectName
                                                         | d -> d)
+        |> setXElemValueNS (xNameThis "ProjectType") projectType
         |> ignore
 
         // <TemplateContent> element

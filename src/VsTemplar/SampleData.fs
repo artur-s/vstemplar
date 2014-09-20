@@ -157,7 +157,7 @@ module internal SampleData=
           <TemplateData>
             <Name>YourProjectNameGoesHere</Name>
             <Description>&lt;No description available&gt;</Description>
-            <ProjectType>CSharp</ProjectType>
+            <ProjectType>FSharp</ProjectType>
             <ProjectSubType>
             </ProjectSubType>
             <SortOrder>1000</SortOrder>
