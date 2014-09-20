@@ -1,11 +1,21 @@
 ﻿namespace VsTemplar
 
+open System.Reflection
+
 module VsTemplate =
-    
+
+    type WizardTemplate =
+        {
+            Assembly : System.Reflection.AssemblyName
+            FullClassName : string
+        }
+
     type MetadataCreationParameters =
         {   VsProjFileLocation : string
             Description : string
-            Target : string }
+            Target: string
+            WizardTemplate : WizardTemplate option } // seq
+    
     
     /// Creates *.vstemplate file from provided *.csproj file.
     /// ## Parameters

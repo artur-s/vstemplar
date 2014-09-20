@@ -51,11 +51,18 @@ module VsTemplate =
     //| x -> failwith "cannot read that property"
 
     // ------------------------------------------------------------------------------------------------------
-    
+  
+    type WizardTemplate =
+        {
+            Assembly : System.Reflection.AssemblyName
+            FullClassName : string
+        }
+
     type MetadataCreationParameters =
         {   VsProjFileLocation : string
             Description : string
-            Target: string }
+            Target: string
+            WizardTemplate : WizardTemplate option} // seq 
     
     type CsProject = XmlProvider<SampleData.VsProject>
     type Template = XmlProvider<SampleData.VsTemplate>
@@ -183,6 +190,17 @@ module VsTemplate =
         
            
         let items = processCsProjectItems sourceProj project
+        
+        let setWizardExtension wizardParams (wizardElement:XElement) =
+            match wizardParams with
+            | Some wx -> wizardElement 
+                         |> setXElemValueNS (xNameThis "Assembly") (wx.Assembly.FullName) 
+                         |> setXElemValueNS (xNameThis "FullClassName") (wx.FullClassName) 
+                         |> ignore
+            | _ -> wizardElement.Remove()
+        
+        dest.WizardExtension.XElement |> setWizardExtension (parameters.WizardTemplate)
+
         dest.XElement
 
     
@@ -192,7 +210,9 @@ module VsTemplate =
         let defaults = { 
             VsProjFileLocation = null
             Description = null
-            Target = null}
+            Target = null
+            WizardTemplate = None} // []
+
         let parameters = setParams defaults
         let template = generateVSTemplate parameters
         template.Save(parameters.Target)
@@ -288,4 +308,4 @@ module VsTemplate =
         dirPath templatesDestination |> Directory.CreateDirectory |> ignore
         zipTemplateTo exportedTemplatesTempDir templatesDestination
 
-        //TODO: clear after copying
+    //TODO: clear after copying

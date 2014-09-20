@@ -93,23 +93,23 @@ module internal SampleData=
             <Compile Include="Security\NullUserContextProvider.cs" />
             <Compile Include="TemplateResourceApiService.cs" />
           </ItemGroup>
-	        <ItemGroup>
-		        <Compile Include="anotherCompileItem.cs" />
-	        </ItemGroup>
-	        <ItemGroup>
-		        <Content Include="Global.asax" />
-		        <Content Include="Web.config">
-			        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		        </Content>
-		        <Content Include="Web.Debug.config">
-			        <DependentUpon>Web.config</DependentUpon>
-			        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		        </Content>
-		        <Content Include="Web.Release.config">
-			        <DependentUpon>Web.config</DependentUpon>
-			        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		        </Content>
-	        </ItemGroup>
+	      <ItemGroup>
+		    <Compile Include="anotherCompileItem.cs" />
+	      </ItemGroup>
+	      <ItemGroup>
+		    <Content Include="Global.asax" />
+		    <Content Include="Web.config">
+			    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		    </Content>
+		    <Content Include="Web.Debug.config">
+			    <DependentUpon>Web.config</DependentUpon>
+			    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		    </Content>
+		    <Content Include="Web.Release.config">
+			    <DependentUpon>Web.config</DependentUpon>
+			    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		    </Content>
+	      </ItemGroup>
 	        <ItemGroup>
 		        <Content Include="packages.config" />
 	        </ItemGroup>
@@ -182,8 +182,8 @@ module internal SampleData=
             </Project>
           </TemplateContent>
            <WizardExtension>
-            <Assembly>IQ.Platform.WebApi.Template.Wizard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c9a76f51a8a9555f</Assembly>
-            <FullClassName>IQ.Platform.WebApi.Template.Wizard.ChildWizard</FullClassName>
+            <Assembly>TemplateWizardAssemblyName, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c9a76f51a8a9555f</Assembly>
+            <FullClassName>TemplateWizardAssemblyName.Wizard.ChildWizard</FullClassName>
           </WizardExtension>
         </VSTemplate>
         """
