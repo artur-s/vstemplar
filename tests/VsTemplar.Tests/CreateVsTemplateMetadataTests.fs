@@ -17,6 +17,7 @@ let ``It should create VsTemplate metadata file based on provided VS project pat
             Target = @"C:\Projects\Git\temp\MyProject\Template\MyTemplateNoWizard.vstemplate"
             })
 
+[<Fact>]
 let ``It should create VsTemplate metadata file based on provided VS project path and WizardTemplate type`` = 
 
     VsTemplate.CreateMetadataVsTemplateMetadata(fun p -> 
