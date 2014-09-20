@@ -9,5 +9,6 @@ open VsTemplar
 let ``It should create zipped template in target directory`` = 
 
     VsTemplate.ExportAsTemplate (fun p -> {p with 
-                                            SourceProjectDirectory = "C:/Projects/TFS/Git/IQ.Platform.Framework/Src/IQ.Platform.Framework.Common"
+                                            SourceProjectDirectory = "C:/Projects/Git/MyProject/Src"
+//                                            SourceProjectDirectory = "C:/Projects/Git/MyProject/Src/MyProject.Common"
                                             TargetDirectory = "D:/Temp/ProjectTemplates/Template.zip"})
