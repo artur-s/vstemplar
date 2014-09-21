@@ -32,7 +32,9 @@ module VsTemplate =
     //TODO:
     type TemplateExportParameters = 
         {   SourceProjectDirectory : string
-            TargetDirectory : string }
+            TargetDirectory : string
+            /// a template parameter for project name in VS project file. Default is '$safeprojectname$'
+            ProjectNameTemplateParameter:string }
 
     //TODO: update usage sample
     /// Creates zipped template file from source project.

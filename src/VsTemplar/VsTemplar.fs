@@ -231,15 +231,17 @@ module VsTemplate =
 
     type TemplateExportParameters = 
         {   SourceProjectDirectory : string
-            TargetDirectory : string }
+            TargetDirectory : string
+            /// a template parameter for project name in VS project file. Default is '$safeprojectname$'
+            ProjectNameTemplateParameter:string }
 
-    /// in a project file replaces project name with "$safeprojectname$"
-    let replaceProjectName targetProgFile =
+    /// in a project file replaces project name with a template parameter
+    let replaceProjectName parameter targetProgFile =
         let csProjXmlNamespace = ["a","http://schemas.microsoft.com/developer/msbuild/2003"]
         let csprojRootNamespaceXpath = "/a:Project/a:PropertyGroup/a:RootNamespace/text()"
         let csprojAssemblyNameXpath = "/a:Project/a:PropertyGroup/a:AssemblyName/text()"
         for xpath in [csprojRootNamespaceXpath;csprojAssemblyNameXpath] do
-            XmlPokeNS targetProgFile csProjXmlNamespace xpath "$safeprojectname$"
+            XmlPokeNS targetProgFile csProjXmlNamespace xpath parameter
 
     let zipTemplateTo source destination = 
     
@@ -263,12 +265,17 @@ module VsTemplate =
 
         let defaults = {
             SourceProjectDirectory = null
-            TargetDirectory = null}
+            TargetDirectory = null
+            ProjectNameTemplateParameter = "$safeprojectname$"}
 
-        let parameters = defaults |> setParams
 
-        if String.IsNullOrWhiteSpace (parameters.SourceProjectDirectory) then
-            invalidArg "setParams.SourceProjecDirectory" "Source project location cannot be empty"
+        let validateParameters ps =
+            if String.IsNullOrWhiteSpace (ps.SourceProjectDirectory) then
+                invalidArg "SourceProjecDirectory" "Source project location cannot be empty"
+            ps
+
+        let parameters = defaults |> setParams |> validateParameters
+
 
         let sourceProjectsDirs = 
             // subdirectories containing VS project file: *.csproj, *.fsproj, *.vbproj
@@ -291,7 +298,7 @@ module VsTemplate =
             | null -> parameters.SourceProjectDirectory
             | tg when (extension tg).Length > 0 -> tg
             //TODO: for single project templates, default name of zip file should be the same as project name        
-            | tg -> tg @@ "Template.zip" //Path.Combine(tg, "Template.zip")
+            | tg -> tg @@ "Template.zip"
 
         let exportedTemplatesTempDir = sprintf "%s%s%A" (Path.GetTempPath()) "VsTemplar_" (Guid.NewGuid())
         // TODO: temp directory in current location
@@ -314,7 +321,8 @@ module VsTemplate =
                                                         VsProjFileLocation = progFileLocation
                                                         Target = tempTarget})
 
-        replaceProjectName targetProgFileLocation
+        if parameters.ProjectNameTemplateParameter <> null
+            then replaceProjectName parameters.ProjectNameTemplateParameter targetProgFileLocation
 
         dirPath templatesDestination |> Directory.CreateDirectory |> ignore
         zipTemplateTo exportedTemplatesTempDir templatesDestination
