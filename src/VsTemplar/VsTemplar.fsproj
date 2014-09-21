@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FakeLib">
-      <HintPath>..\..\lib\FAKE.Core.3.4.3\bin\FakeLib.dll</HintPath>
+      <HintPath>..\..\lib\FAKE.Core.3.4.3\lib\FakeLib.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
@@ -71,7 +71,12 @@
       <HintPath>..\..\packages\FSharp.Data.2.0.14\lib\net40\FSharp.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FSharp.Data.TypeProviders, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="FSharp.Data.TypeProviders, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\lib\FAKE.Core.3.4.3\lib\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
