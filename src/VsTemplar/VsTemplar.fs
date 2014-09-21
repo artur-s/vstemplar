@@ -268,7 +268,6 @@ module VsTemplate =
             TargetDirectory = null
             ProjectNameTemplateParameter = "$safeprojectname$"}
 
-
         let validateParameters ps =
             if String.IsNullOrWhiteSpace (ps.SourceProjectDirectory) then
                 invalidArg "SourceProjecDirectory" "Source project location cannot be empty"
@@ -276,22 +275,19 @@ module VsTemplate =
 
         let parameters = defaults |> setParams |> validateParameters
 
-
         let sourceProjectsDirs = 
             // subdirectories containing VS project file: *.csproj, *.fsproj, *.vbproj
-            !! (parameters.SourceProjectDirectory @@ @"*/*.?sproj")
+            !! (parameters.SourceProjectDirectory @@ @"**/*.?sproj")
         
         // TODO: support multible. Single project for now
-        let progFileLocation = 
+        let progFileLocations = 
             match sourceProjectsDirs |> List.ofSeq with
-            | sd::_ -> sd
-            | _ -> invalidArg "setParams.SourceProjecDirectory" "Source project location does not contain any VS projects"
+            | [] -> invalidArg "setParams.SourceProjecDirectory" "Source project location does not contain any VS projects"
+            | locations -> locations
 
         let dirPath filePath = Path.GetDirectoryName filePath
         let fileName filePath = Path.GetFileName filePath
         let extension file = Path.GetExtension file
-
-        let sourceProjectDir = dirPath progFileLocation
 
         let templatesDestination = 
             match parameters.TargetDirectory with
@@ -301,30 +297,43 @@ module VsTemplate =
             | tg -> tg @@ "Template.zip"
 
         let exportedTemplatesTempDir = sprintf "%s%s%A" (Path.GetTempPath()) "VsTemplar_" (Guid.NewGuid())
-        // TODO: temp directory in current location
-        let targetDir = (exportedTemplatesTempDir @@ (fileName sourceProjectDir))
-        Directory.CreateDirectory targetDir |> ignore
-        let targetProgFileName = fileName progFileLocation
-        let targetProgFileLocation = targetDir @@ targetProgFileName
+        
+        for projFileLocation in progFileLocations do
+
+            let sourceProjectDir = dirPath projFileLocation
+
+            // TODO: temp directory in current location
+            let targetDir = (exportedTemplatesTempDir @@ (fileName sourceProjectDir))
+            Directory.CreateDirectory targetDir |> ignore
+            let targetProgFileName = fileName projFileLocation
+            let targetProgFileLocation = targetDir @@ targetProgFileName
         
       
-        let copyProjectFiles sourceDir targetDir =
-            Fake.FileHelper.CopyDir targetDir sourceDir allFiles |> ignore
+            let copyProjectFiles sourceDir targetDir =
+                Fake.FileHelper.CopyDir targetDir sourceDir allFiles |> ignore
 
-        copyProjectFiles sourceProjectDir targetDir
+            copyProjectFiles sourceProjectDir targetDir
 
-        // check
-        let tempTarget = targetDir @@ "MyTemplate.vstemplate"
-        tempTarget |> printfn "%s"
+            // check
+            let tempTarget = targetDir @@ "MyTemplate.vstemplate"
+            tempTarget |> printfn "%s"
 
-        CreateMetadataVsTemplateMetadata (fun p -> {p with 
-                                                        VsProjFileLocation = progFileLocation
-                                                        Target = tempTarget})
+            CreateMetadataVsTemplateMetadata (fun p -> {p with 
+                                                            VsProjFileLocation = projFileLocation
+                                                            Target = tempTarget})
 
-        if parameters.ProjectNameTemplateParameter <> null
-            then replaceProjectName parameters.ProjectNameTemplateParameter targetProgFileLocation
+            if parameters.ProjectNameTemplateParameter <> null
+                then replaceProjectName parameters.ProjectNameTemplateParameter targetProgFileLocation
 
+
+        let templateSource = 
+            match !! (exportedTemplatesTempDir @@ "*/") |> List.ofSeq with
+            | singleProject::[] -> singleProject
+            | _ -> exportedTemplatesTempDir
+
+        // ensure destination folder
         dirPath templatesDestination |> Directory.CreateDirectory |> ignore
-        zipTemplateTo exportedTemplatesTempDir templatesDestination
+        
+        zipTemplateTo templateSource templatesDestination
 
     //TODO: clear after copying
