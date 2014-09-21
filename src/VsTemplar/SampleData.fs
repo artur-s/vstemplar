@@ -180,6 +180,14 @@ module internal SampleData=
               </Folder>
               <ProjectItem ReplaceParameters="true" TargetFileName="TemplateResourceApiService.cs">TemplateResourceApiService.cs</ProjectItem>
             </Project>
+            <ProjectCollection>
+            <!--//TODO: adding proper project to root template and update root wizard extension (provide ready Wizard dll)
+	         <ProjectTemplateLink ProjectName="$safeprojectname$.Model">PutYourApiNameHere.Model\MyTemplate.vstemplate</ProjectTemplateLink>
+	         <ProjectTemplateLink ProjectName="$safeprojectname$.ApiServices">PutYourApiNameHere.ApiServices\MyTemplate.vstemplate</ProjectTemplateLink>      
+	         <ProjectTemplateLink ProjectName="$safeprojectname$.Documentation">PutYourApiNameHere.Documentation\MyTemplate.vstemplate</ProjectTemplateLink>
+	         <ProjectTemplateLink ProjectName="$safeprojectname$.WebApi">PutYourApiNameHere.WebApi\MyTemplate.vstemplate</ProjectTemplateLink>
+	         <ProjectTemplateLink ProjectName="$safeprojectname$.IntegrationTests">PutYourApiNameHere.IntegrationTests\MyTemplate.vstemplate</ProjectTemplateLink>
+            </ProjectCollection> -->
           </TemplateContent>
            <WizardExtension>
             <Assembly>TemplateWizardAssemblyName, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c9a76f51a8a9555f</Assembly>
