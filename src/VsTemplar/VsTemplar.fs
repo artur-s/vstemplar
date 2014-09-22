@@ -68,7 +68,7 @@ module VsTemplate =
     type Template = XmlProvider<SampleData.VsTemplate>
     
 
-    let generateVSTemplate (parameters:MetadataCreationParameters) =
+    let generateSingleProjectVsTemplate (parameters:MetadataCreationParameters) =
 
 
         let sourceProj = CsProject.Load(parameters.VsProjFileLocation)
@@ -91,8 +91,10 @@ module VsTemplate =
 
         let destTemplate = Template.GetSample()
         let dest = Template.GetSample()
-        // dest.XElement.ToString()
-        // destTemplate.XElement.ToString()
+
+        dest.TemplateContent.ProjectCollection.XElement.Remove()
+        dest.WizardData.XElement.Remove()
+
 
         let xNameThis name = xNameNS name (destTemplate.XElement.GetDefaultNamespace().NamespaceName) // Xmlns
 
@@ -201,6 +203,10 @@ module VsTemplate =
         
            
         let items = processCsProjectItems sourceProj project
+
+
+        //TODO: add proper project to root template and update root wizard extension (provide ready Wizard dll)
+        
         
         let setWizardExtension wizardParams (wizardElement:XElement) =
             match wizardParams with
@@ -211,6 +217,9 @@ module VsTemplate =
             | _ -> wizardElement.Remove()
         
         dest.WizardExtension.XElement |> setWizardExtension (parameters.WizardTemplate)
+        
+//TODO: dest.WizardData
+
 
         dest.XElement
 
@@ -225,15 +234,24 @@ module VsTemplate =
             WizardTemplate = None} // []
 
         let parameters = setParams defaults
-        let template = generateVSTemplate parameters
+        let template = generateSingleProjectVsTemplate parameters
         template.Save(parameters.Target)
-
 
     type TemplateExportParameters = 
         {   SourceProjectDirectory : string
             TargetDirectory : string
             /// a template parameter for project name in VS project file. Default is '$safeprojectname$'
             ProjectNameTemplateParameter:string }
+
+    //TODO: adding proper project to root template and update root wizard extension (provide ready Wizard dll)
+    let generateRootVsTemplate (metaMarameters:MetadataCreationParameters) (expParameters:TemplateExportParameters) = 
+        
+        let dest = Template.GetSample()
+
+        dest.TemplateContent.Project.XElement.Remove()
+        dest.WizardData.XElement.Remove()
+        
+        ()
 
     /// in a project file replaces project name with a template parameter
     let replaceProjectName parameter targetProgFile =
