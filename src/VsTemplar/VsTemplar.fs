@@ -213,14 +213,22 @@ module VsTemplate =
             /// a template parameter for project name in VS project file. Default is '$safeprojectname$'
             ProjectNameTemplateParameter:string }
 
+    type ProjectTemplateLink =
+        {   Name:string
+            Location: System.IO.Path }
+
     //TODO: adding proper project to root template and update root wizard extension (provide ready Wizard dll)
-    let generateRootVsTemplate (metaMarameters:MetadataCreationParameters) (expParameters:TemplateExportParameters) = 
+    let generateRootVsTemplate (metaMarameters:MetadataCreationParameters) (expParameters:TemplateExportParameters) (projectTemplateLinks:ProjectTemplateLink seq) = 
         
         let dest = Template.GetSample()
 
         dest.TemplateContent.Project.XElement.Remove()
         dest.WizardData.XElement.Remove()
         
+
+
+
+
         ()
 
    
