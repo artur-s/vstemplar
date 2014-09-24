@@ -13,37 +13,7 @@ module VsTemplate =
     open System.Xml.Linq
     open FSharp.Data
     open Fake
-
-    // ------------------------------------------------------------------------------------------------------
-    let ofOption = function | null -> None | i -> Some i
-    let xName name = XName.op_Implicit name 
-    let xNameNS name ns = XName.Get(name, ns)
-
-    let getXElemNS childName (elem:XElement) = 
-        ofOption <| elem.Element(childName)
-    let getXElem childName (elem:XElement) = 
-        getXElemNS (xName childName) elem
-    
-    let setXElemValueNS childName newValue (elem:XElement) = 
-        match getXElemNS childName elem with
-        | Some child -> child.Value <- newValue
-        | None -> ()
-        elem
-    let setXElemValue childName newValue (elem:XElement) = 
-        setXElemValueNS (xName childName) newValue elem
-
-    let addChildXElem (child:XElement) (elem:XElement) =
-        elem.Add(child)
-        elem
-
-    let getXAttr attrName (elem:XElement) = 
-        ofOption <| elem.Attribute(xName attrName)
-
-    let setXAttrValue attrName newValue (elem:XElement) =
-        match getXAttr attrName elem with
-        | Some attr -> attr.Value <- newValue
-        | None -> ()
-        elem
+    open XmlHelpers
 
     // TODO: more type-safety with code quotations
     //match <@dest.TemplateContent.Project.TargetFileName@> with 
@@ -253,33 +223,33 @@ module VsTemplate =
         
         ()
 
-    /// in a project file replaces project name with a template parameter
-    let replaceProjectName parameter targetProgFile =
-        let csProjXmlNamespace = ["a","http://schemas.microsoft.com/developer/msbuild/2003"]
-        let csprojRootNamespaceXpath = "/a:Project/a:PropertyGroup/a:RootNamespace/text()"
-        let csprojAssemblyNameXpath = "/a:Project/a:PropertyGroup/a:AssemblyName/text()"
-        for xpath in [csprojRootNamespaceXpath;csprojAssemblyNameXpath] do
-            XmlPokeNS targetProgFile csProjXmlNamespace xpath parameter
-
-    let zipTemplateTo source destination = 
-    
-        FileHelper.DeleteDirs (!! (source @@ @"**/bin/" ))
-        FileHelper.DeleteDirs (!! (source @@ @"**/obj/" ))
-
-        let tempZip = source + "/" + (Path.GetFileName destination)
-        printfn "tempZip: %s" tempZip
-        let files = !! (source @@ "**/*")
-        try
-            ZipHelper.Zip source tempZip files
-        with
-            | ex -> printf "exception when zipping files: %s" ex.Message
-
-        printfn "templates.zip destination: %s" destination
-        CopyFile destination tempZip
-
-
+   
     let ExportAsTemplate
         (setParams:TemplateExportParameters -> TemplateExportParameters) =
+
+        /// in a project file replaces project name with a template parameter
+        let replaceProjectName parameter targetProgFile =
+            let csProjXmlNamespace = ["a","http://schemas.microsoft.com/developer/msbuild/2003"]
+            let csprojRootNamespaceXpath = "/a:Project/a:PropertyGroup/a:RootNamespace/text()"
+            let csprojAssemblyNameXpath = "/a:Project/a:PropertyGroup/a:AssemblyName/text()"
+            for xpath in [csprojRootNamespaceXpath;csprojAssemblyNameXpath] do
+                XmlPokeNS targetProgFile csProjXmlNamespace xpath parameter
+
+        let zipTemplateTo source destination = 
+    
+            FileHelper.DeleteDirs (!! (source @@ @"**/bin/" ))
+            FileHelper.DeleteDirs (!! (source @@ @"**/obj/" ))
+
+            let tempZip = source + "/" + (Path.GetFileName destination)
+            printfn "tempZip: %s" tempZip
+            let files = !! (source @@ "**/*")
+            try
+                ZipHelper.Zip source tempZip files
+            with
+                | ex -> printf "exception when zipping files: %s" ex.Message
+
+            printfn "templates.zip destination: %s" destination
+            CopyFile destination tempZip
 
         let defaults = {
             SourceProjectDirectory = null
