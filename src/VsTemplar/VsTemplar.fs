@@ -1,11 +1,6 @@
 ﻿// http://trelford.com/blog/post/F-XML-Comparison-(XElement-vs-XmlDocument-vs-XmlReaderXmlWriter-vs-Discriminated-Unions).aspx
 namespace VsTemplar
 
-#if INTERACTIVE
-#r "System.Xml.Linq"
-#r "../../packages/FSharp.Data.2.0.4/lib/net40/FSharp.Data.dll"
-#endif
-
 module VsTemplate =
     open System
     open System.IO

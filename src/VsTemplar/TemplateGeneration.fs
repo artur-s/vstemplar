@@ -1,5 +1,14 @@
 ﻿module internal VsTemplar.TemplateGeneration
 
+
+#if INTERACTIVE
+#r "System.Xml"
+#r "System.Xml.Linq"
+#r "../../packages/FSharp.Data/lib/net40/FSharp.Data.dll"
+#load "XmlHelpers.fs"
+#endif
+
+
 open System
 open System.Linq
 open System.Xml.Linq
