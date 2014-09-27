@@ -64,8 +64,8 @@
     <Compile Include="UnquoteAssertionsAliases.fs" />
     <Content Include="packages.config" />
     <Content Include="app.config" />
+    <Compile Include="TemplateGenerationTests.fs" />
     <Compile Include="CreateVsTemplateMetadataTests.fs" />
-    <Compile Include="GenerateRootTemplateTests.fs" />
     <Compile Include="ExportAsTemplateTests.fs" />
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +76,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Unquote">
       <HintPath>..\..\packages\Unquote.2.2.2\lib\net40\Unquote.dll</HintPath>
       <Private>True</Private>

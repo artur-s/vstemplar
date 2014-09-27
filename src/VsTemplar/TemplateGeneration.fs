@@ -14,7 +14,7 @@ open XmlHelpers
 
     // ------------------------------------------------------------------------------------------------------
   
-    
+        
     type CsProject = XmlProvider<SampleData.VsProject>
     type Template = XmlProvider<SampleData.VsTemplate>
     
@@ -179,12 +179,12 @@ open XmlHelpers
             Location: System.IO.Path }
 
     //TODO: adding proper project to root template and update root wizard extension (provide ready Wizard dll)
-    let generateRootVsTemplate (metaMarameters:MetadataCreationParameters) (expParameters:TemplateExportParameters) (projectTemplateLinks:ProjectTemplateLink seq) = 
+    let generateRootVsTemplate (metaParameters:MetadataCreationParameters) (expParameters:TemplateExportParameters) (projectTemplateLinks:ProjectTemplateLink seq) = 
         
         let dest = Template.GetSample()
 
         dest.TemplateContent.Project.XElement.Remove()
         dest.WizardData.XElement.Remove()
         
-
-        ()
+        dest.XElement
+        
