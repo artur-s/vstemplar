@@ -1,0 +1,8 @@
+source http://nuget.org/api/v2
+
+nuget FAKE ~> 3.4
+nuget FAKE.Core ~> 3.4
+nuget FSharp.Data ~> 2.0
+nuget Unquote ~> 2.2
+nuget xunit
+nuget Nuget.CommandLine

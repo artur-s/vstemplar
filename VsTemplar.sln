@@ -6,6 +6,8 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C837A994-D6D3-4C1A-8313-6D419593EF7D}"
 	ProjectSection(SolutionItems) = preProject
 		build.fsx = build.fsx
+		paket.dependencies = paket.dependencies
+		paket.lock = paket.lock
 		RELEASE_NOTES.md = RELEASE_NOTES.md
 		nuget\VsTemplar.nuspec = nuget\VsTemplar.nuspec
 	EndProjectSection
@@ -15,11 +17,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D7D3ED08-6007-4291-B5C3-CBA9E4D65822}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "VsTemplar", "src\VsTemplar\VsTemplar.fsproj", "{F496D7E3-BC0F-449F-B3B7-9F1B73278C87}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2857C2DC-A4EF-4440-A79E-91B14F259443}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "VsTemplar.Tests", "tests\VsTemplar.Tests\VsTemplar.Tests.fsproj", "{CD1B0F0F-47F0-4AA9-BF82-C822BF93A00F}"
 EndProject

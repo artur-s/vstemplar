@@ -3,7 +3,6 @@
 open System
 open System.Reflection
 open Xunit
-open Xunit.Extensions
 open VsTemplar
 
 [<Fact>]
