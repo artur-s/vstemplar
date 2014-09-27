@@ -6,7 +6,6 @@ NUGET
     FSharp.Data (2.0.15)
       Zlib.Portable (>= 1.10.0)
     NuGet.CommandLine (2.8.2)
-    NUnit.Runners (2.6.3)
     Unquote (2.2.2)
     xunit (1.9.2)
     Zlib.Portable (1.10.0)
