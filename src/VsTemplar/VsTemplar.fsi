@@ -2,20 +2,9 @@
 
 open System.Reflection
 
+
 module VsTemplate =
 
-    type WizardTemplate =
-        {
-            Assembly : System.Reflection.AssemblyName
-            FullClassName : string
-        }
-
-    type MetadataCreationParameters =
-        {   VsProjFileLocation : string
-            Description : string
-            Target: string
-            WizardTemplate : WizardTemplate option } // seq
-    
     
     /// Creates *.vstemplate file from provided *.csproj file.
     /// ## Parameters
@@ -28,13 +17,6 @@ module VsTemplate =
     ///                                         Target =  @"D:\Temp\MyTemplate.vstemplate"})
     ///
     val CreateMetadataVsTemplateMetadata : setParams:(MetadataCreationParameters -> MetadataCreationParameters) -> unit
-
-    //TODO:
-    type TemplateExportParameters = 
-        {   SourceProjectDirectory : string
-            TargetDirectory : string
-            /// a template parameter for project name in VS project file. Default is '$safeprojectname$'
-            ProjectNameTemplateParameter:string }
 
     //TODO: update usage sample
     /// Creates zipped template file from source project.
