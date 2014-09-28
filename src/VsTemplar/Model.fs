@@ -13,10 +13,25 @@ type MetadataCreationParameters =
         Target: string
         WizardTemplate : WizardTemplate option } // seq
 
- //TODO:
+type ProjectType =
+        | CSharp = 1
+        | FSharp = 2
+        | VisualBasic = 3
+
+type RootTemplate =
+    {   Name:string
+        Description:string
+        IconPath:string
+        ProjectType:ProjectType option
+        RequiredFrameworkVersion:string
+        DefaultName:string
+        CreateNewFolder:bool
+        Wizard:WizardTemplate option} //TODO: use default if none
+
 type TemplateExportParameters = 
     {   SourceProjectDirectory : string
         TargetDirectory : string
         /// a template parameter for project name in VS project file. Default is '$safeprojectname$'
-        ProjectNameTemplateParameter:string }
+        ProjectNameTemplateParameter:string
+        Root:RootTemplate option}
 

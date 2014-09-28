@@ -53,7 +53,8 @@ module VsTemplate =
         let defaults = {
             SourceProjectDirectory = null
             TargetDirectory = null
-            ProjectNameTemplateParameter = "$safeprojectname$"}
+            ProjectNameTemplateParameter = "$safeprojectname$"
+            Root = None}
 
         let validateParameters ps =
             if String.IsNullOrWhiteSpace (ps.SourceProjectDirectory) then

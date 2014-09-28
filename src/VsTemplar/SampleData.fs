@@ -167,6 +167,7 @@ module internal SampleData=
             <LocationField>Enabled</LocationField>
             <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
             <Icon>__TemplateIcon.ico</Icon>
+            <RequiredFrameworkVersion>4.5.3.1</RequiredFrameworkVersion>
           </TemplateData>
           <TemplateContent>
             <Project TargetFileName="YourProjectNameGoesHere.csproj" File="YourProjectNameGoesHere.csproj" ReplaceParameters="true">

@@ -23,13 +23,24 @@ open XmlHelpers
 
     // ------------------------------------------------------------------------------------------------------
   
-        
     type CsProject = XmlProvider<SampleData.VsProject>
     type Template = XmlProvider<SampleData.VsTemplate>
     
 
-    let generateSingleProjectVsTemplate (parameters:MetadataCreationParameters) =
+    let xName name (fromElement:XElement) = xNameNS name (fromElement.GetDefaultNamespace().NamespaceName)
 
+    let projectType parameters =
+        match System.IO.Path.GetExtension parameters.VsProjFileLocation with
+        | ext when ext.Length > 0 ->
+            match ext with
+            //TODO: ProjectType enum
+            | ".csproj" -> "CSharp"
+            | ".fsproj" -> "FSharp"
+            | ".vbproj" -> "VisualBasic"
+            | _ -> failwith "Not supported project type"
+        | _ -> failwith "Cannot determine Visual Studio project type"
+
+    let generateSingleProjectVsTemplate (parameters:MetadataCreationParameters) =
 
         let sourceProj = CsProject.Load(parameters.VsProjFileLocation)
     
@@ -39,15 +50,7 @@ open XmlHelpers
             | _ -> failwithf "Cannot find project name in %s" parameters.VsProjFileLocation
 
         // http://msdn.microsoft.com/en-us/library/5we0w25d.aspx
-        let projectType =
-            match System.IO.Path.GetExtension parameters.VsProjFileLocation with
-            | ext when ext.Length > 0 ->
-                match ext with
-                | ".csproj" -> "CSharp"
-                | ".fsproj" -> "FSharp"
-                | ".vbproj" -> "VisualBasic"
-                | _ -> failwith "Not supported project type"
-            | _ -> failwith "Cannot determine Visual Studio project type"
+        
 
         let destTemplate = Template.GetSample()
         let dest = Template.GetSample()
@@ -56,7 +59,7 @@ open XmlHelpers
         dest.WizardData.XElement.Remove()
 
 
-        let xNameThis name = xNameNS name (destTemplate.XElement.GetDefaultNamespace().NamespaceName) // Xmlns
+        let xNameThis name = destTemplate.XElement |> xName name
 
         dest.TemplateData.XElement 
         |> setXElemValueNS (xNameThis "Name") projectName
@@ -64,7 +67,7 @@ open XmlHelpers
         |> setXElemValueNS (xNameThis "Description") ( match parameters.Description with
                                                         | null | "" -> sprintf "template generated from %s project" projectName
                                                         | d -> d)
-        |> setXElemValueNS (xNameThis "ProjectType") projectType
+        |> setXElemValueNS (xNameThis "ProjectType") (projectType parameters)
         |> ignore
 
         // <TemplateContent> element
@@ -188,12 +191,32 @@ open XmlHelpers
             Location: System.IO.Path }
 
     //TODO: adding proper project to root template and update root wizard extension (provide ready Wizard dll)
-    let generateRootVsTemplate (metaParameters:MetadataCreationParameters) (expParameters:TemplateExportParameters) (projectTemplateLinks:ProjectTemplateLink seq) = 
+    let generateRootVsTemplate (parameters:RootTemplate) (projectTemplateLinks:ProjectTemplateLink seq) = 
         
         let dest = Template.GetSample()
 
         dest.TemplateContent.Project.XElement.Remove()
         dest.WizardData.XElement.Remove()
+        let xNameThis name = dest.XElement |> xName name 
         
+        let projectName = parameters.Name
+
+        dest.TemplateData.XElement 
+            |> setXElemValueNS (xNameThis "Name") projectName
+            |> setXElemValueNS (xNameThis "Description") ( match parameters.Description with
+                                                            | null | "" -> sprintf "Solution Template for %s" projectName
+                                                            | d -> d)
+            |> setXElemValueNS (xNameThis "ProjectType") ( match parameters.ProjectType with 
+                                                           | Some ptype -> sprintf "%A" ptype
+                                                           | _ -> "")
+            |> setXElemValueNS (xNameThis "Icon") parameters.IconPath
+            |> setXElemValueNS (xNameThis "RequiredFrameworkVersion") parameters.RequiredFrameworkVersion
+//            |> setXElemValueNS (xNameThis "TemplateGroupID") parameters.IconPath
+            |> setXElemValueNS (xNameThis "CreateNewFolder") (parameters.CreateNewFolder.ToString())
+            |> ignore
+
+        //TODO: finish
+
+
         dest.XElement
         
