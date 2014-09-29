@@ -186,18 +186,23 @@ open XmlHelpers
 
         dest.XElement
 
-    type ProjectTemplateLinkData =
+    // ref: http://msdn.microsoft.com/en-us/library/ms171397.aspx
+    type ProjectTemplateLinkItem =
         {   Name:string
             Location: System.IO.Path }
-
-    // ref: http://msdn.microsoft.com/en-us/library/ms171397.aspx
-    type ProjectStructureItem = //TODO: possibly tree structure
-        | ProjectTemplateLink of ProjectTemplateLinkData
-        | SolutionFolder //TODO
+    
+    // ref: http://msdn.microsoft.com/en-us/library/ms171399.aspx
+    and SolutionFolderItem =
+        {   Name:string
+            ProjectStructureItem: ProjectStructure list}
+    
+    and ProjectStructure =
+        | ProjectTemplateLink of ProjectTemplateLinkItem
+        | SolutionFolder of SolutionFolderItem
 
 
     //TODO: adding proper project to root template and update root wizard extension (provide ready Wizard dll)
-    let generateRootVsTemplate (parameters:RootTemplate) (projectStructureItem:ProjectStructureItem seq) = 
+    let generateRootVsTemplate (parameters:RootTemplate) (projectStructureItem:ProjectStructure seq) = 
         
         let dest = Template.GetSample()
 
@@ -205,11 +210,11 @@ open XmlHelpers
         dest.WizardData.XElement.Remove()
         let xNameThis name = dest.XElement |> xName name 
         
-        let fillTemplateData (parameters:RootTemplate) =
+        let fillTemplateData (parameters:RootTemplate) (templateData:Template.TemplateData) =
             
             let projectName = parameters.Name
 
-            dest.TemplateData.XElement 
+            templateData.XElement
                 |> setXElemValueNS (xNameThis "Name") projectName
                 |> setXElemValueNS (xNameThis "Description") ( match parameters.Description with
                                                                 | null | "" -> sprintf "Solution Template for %s" projectName
@@ -224,15 +229,15 @@ open XmlHelpers
                 |> ignore
             //TODO: finish
 
-        let fillProjectCollection (projectStructureItem:ProjectStructureItem seq) =
-            //TODO: implemennt
+        let fillProjectCollection (projectStructureItem:ProjectStructure seq) (templateContent:Template.TemplateContent) =
+            //TODO: implement
+//            templateContent.ProjectCollection.SolutionFolder
+//            templateContent.ProjectCollection.ProjectTemplateLinks
             raise (NotImplementedException())
             ()
-
-        fillTemplateData parameters
-
-        fillProjectCollection projectStructureItem
-
+            
+        dest.TemplateData |> fillTemplateData parameters
+        dest.TemplateContent |> fillProjectCollection projectStructureItem
 
         dest.XElement
         

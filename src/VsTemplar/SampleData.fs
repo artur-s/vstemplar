@@ -183,10 +183,12 @@ module internal SampleData=
             </Project>
             <ProjectCollection>
 	         <ProjectTemplateLink ProjectName="$safeprojectname$.Model">PutYourApiNameHere.Model\MyTemplate.vstemplate</ProjectTemplateLink>
-	         <ProjectTemplateLink ProjectName="$safeprojectname$.ApiServices">PutYourApiNameHere.ApiServices\MyTemplate.vstemplate</ProjectTemplateLink>      
 	         <ProjectTemplateLink ProjectName="$safeprojectname$.Documentation">PutYourApiNameHere.Documentation\MyTemplate.vstemplate</ProjectTemplateLink>
 	         <ProjectTemplateLink ProjectName="$safeprojectname$.WebApi">PutYourApiNameHere.WebApi\MyTemplate.vstemplate</ProjectTemplateLink>
-	         <ProjectTemplateLink ProjectName="$safeprojectname$.IntegrationTests">PutYourApiNameHere.IntegrationTests\MyTemplate.vstemplate</ProjectTemplateLink>
+                <SolutionFolder Name="Math Classes">
+                    <ProjectTemplateLink ProjectName="MathClassLib1">MathClassLib1\MyTemplate.vstemplate</ProjectTemplateLink>
+                    <ProjectTemplateLink ProjectName="MathClassLib2">MathClassLib2\MyTemplate.vstemplate</ProjectTemplateLink>
+                </SolutionFolder>
             </ProjectCollection>
           </TemplateContent>
            <WizardExtension>
