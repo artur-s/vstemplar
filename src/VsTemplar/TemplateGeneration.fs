@@ -186,12 +186,18 @@ open XmlHelpers
 
         dest.XElement
 
-    type ProjectTemplateLink =
+    type ProjectTemplateLinkData =
         {   Name:string
             Location: System.IO.Path }
 
+    // ref: http://msdn.microsoft.com/en-us/library/ms171397.aspx
+    type ProjectStructureItem = //TODO: possibly tree structure
+        | ProjectTemplateLink of ProjectTemplateLinkData
+        | SolutionFolder //TODO
+
+
     //TODO: adding proper project to root template and update root wizard extension (provide ready Wizard dll)
-    let generateRootVsTemplate (parameters:RootTemplate) (projectTemplateLinks:ProjectTemplateLink seq) = 
+    let generateRootVsTemplate (parameters:RootTemplate) (projectStructureItem:ProjectStructureItem seq) = 
         
         let dest = Template.GetSample()
 
@@ -199,23 +205,33 @@ open XmlHelpers
         dest.WizardData.XElement.Remove()
         let xNameThis name = dest.XElement |> xName name 
         
-        let projectName = parameters.Name
+        let fillTemplateData (parameters:RootTemplate) =
+            
+            let projectName = parameters.Name
 
-        dest.TemplateData.XElement 
-            |> setXElemValueNS (xNameThis "Name") projectName
-            |> setXElemValueNS (xNameThis "Description") ( match parameters.Description with
-                                                            | null | "" -> sprintf "Solution Template for %s" projectName
-                                                            | d -> d)
-            |> setXElemValueNS (xNameThis "ProjectType") ( match parameters.ProjectType with 
-                                                           | Some ptype -> sprintf "%A" ptype
-                                                           | _ -> "")
-            |> setXElemValueNS (xNameThis "Icon") parameters.IconPath
-            |> setXElemValueNS (xNameThis "RequiredFrameworkVersion") parameters.RequiredFrameworkVersion
-//            |> setXElemValueNS (xNameThis "TemplateGroupID") parameters.IconPath
-            |> setXElemValueNS (xNameThis "CreateNewFolder") (parameters.CreateNewFolder.ToString())
-            |> ignore
+            dest.TemplateData.XElement 
+                |> setXElemValueNS (xNameThis "Name") projectName
+                |> setXElemValueNS (xNameThis "Description") ( match parameters.Description with
+                                                                | null | "" -> sprintf "Solution Template for %s" projectName
+                                                                | d -> d)
+                |> setXElemValueNS (xNameThis "ProjectType") ( match parameters.ProjectType with 
+                                                               | Some ptype -> sprintf "%A" ptype
+                                                               | _ -> "")
+                |> setXElemValueNS (xNameThis "Icon") parameters.IconPath
+                |> setXElemValueNS (xNameThis "RequiredFrameworkVersion") parameters.RequiredFrameworkVersion
+    //            |> setXElemValueNS (xNameThis "TemplateGroupID") parameters.IconPath
+                |> setXElemValueNS (xNameThis "CreateNewFolder") (parameters.CreateNewFolder.ToString())
+                |> ignore
+            //TODO: finish
 
-        //TODO: finish
+        let fillProjectCollection (projectStructureItem:ProjectStructureItem seq) =
+            //TODO: implemennt
+            raise (NotImplementedException())
+            ()
+
+        fillTemplateData parameters
+
+        fillProjectCollection projectStructureItem
 
 
         dest.XElement
