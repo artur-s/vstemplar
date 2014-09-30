@@ -229,13 +229,34 @@ open XmlHelpers
                 |> ignore
             //TODO: finish
 
-        let fillProjectCollection (projectStructureItem:ProjectStructure seq) (templateContent:Template.TemplateContent) =
+        let fillProjectCollection (projectsStructure:ProjectStructure seq) (templateContent:Template.TemplateContent) =
             //TODO: implement
 //            templateContent.ProjectCollection.SolutionFolder
 //            templateContent.ProjectCollection.ProjectTemplateLinks
-            raise (NotImplementedException())
-            ()
-            
+
+            let addTemplateLink (item:ProjectTemplateLinkItem) (collectionOfFolder:XElement) =
+                let link =  dest.TemplateContent.ProjectCollection.ProjectTemplateLinks |> Seq.head 
+                            |> (fun i -> new XElement(i.XElement))
+                            |> setXAttrValue "ProjectName" item.Name
+                            |> setXThisValue (item.Location.ToString())
+                            |> (fun xelem -> xelem.RemoveNodes(); xelem)
+                addChildXElem link collectionOfFolder |> ignore
+                link
+                                
+
+        
+            //TODO: recursive, to support folders
+            let addCollection structure (xParent:XElement) =
+                structure
+                |> Seq.iter (function 
+                            | ProjectTemplateLink i -> (xParent |> addTemplateLink i |> ignore) 
+                            | _ -> ())
+
+            let collection = templateContent.ProjectCollection
+            collection.XElement.RemoveNodes()
+            addCollection projectsStructure collection.XElement
+
+
         dest.TemplateData |> fillTemplateData parameters
         dest.TemplateContent |> fillProjectCollection projectStructureItem
 

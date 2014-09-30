@@ -22,6 +22,10 @@ let setXElemValueNS childName newValue (elem:XElement) =
 let setXElemValue childName newValue (elem:XElement) = 
     setXElemValueNS (xName childName) newValue elem
 
+let setXThisValue (newValue:string) (elem:XElement) =
+    elem.SetValue(newValue)
+    elem
+
 let addChildXElem (child:XElement) (elem:XElement) =
     elem.Add(child)
     elem
