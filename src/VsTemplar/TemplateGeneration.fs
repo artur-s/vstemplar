@@ -186,23 +186,10 @@ open XmlHelpers
 
         dest.XElement
 
-    // ref: http://msdn.microsoft.com/en-us/library/ms171397.aspx
-    type ProjectTemplateLinkItem =
-        {   Name:string
-            Location: System.IO.Path }
-    
-    // ref: http://msdn.microsoft.com/en-us/library/ms171399.aspx
-    and SolutionFolderItem =
-        {   Name:string
-            ProjectStructureItem: ProjectStructure list}
-    
-    and ProjectStructure =
-        | ProjectTemplateLink of ProjectTemplateLinkItem
-        | SolutionFolder of SolutionFolderItem
-
+  
 
     //TODO: adding proper project to root template and update root wizard extension (provide ready Wizard dll)
-    let generateRootVsTemplate (parameters:RootTemplate) (projectStructureItem:ProjectStructure seq) = 
+    let generateRootVsTemplate (parameters:RootTemplate) = 
         
         let dest = Template.GetSample()
 
@@ -229,21 +216,15 @@ open XmlHelpers
                 |> ignore
             //TODO: finish
 
-        let fillProjectCollection (projectsStructure:ProjectStructure seq) (templateContent:Template.TemplateContent) =
-            //TODO: implement
-//            templateContent.ProjectCollection.SolutionFolder
-//            templateContent.ProjectCollection.ProjectTemplateLinks
+        let fillProjectCollection (SolutionContent projectsStructure) (templateContent:Template.TemplateContent) =
 
             let addTemplateLink (item:ProjectTemplateLinkItem) (collectionOfFolder:XElement) =
-                let link =  dest.TemplateContent.ProjectCollection.ProjectTemplateLinks |> Seq.head 
-                            |> (fun i -> new XElement(i.XElement))
-                            |> setXAttrValue "ProjectName" item.Name
-                            |> setXThisValue (item.Location.ToString())
-                            |> (fun xelem -> xelem.RemoveNodes(); xelem)
-                addChildXElem link collectionOfFolder |> ignore
+                
+                let link = new Template.ProjectTemplateLink(item.Name, item.Location)
+                            |> (fun tl -> tl.XElement.RemoveNodes(); tl)
+                addChildXElem link.XElement collectionOfFolder |> ignore
                 link
                                 
-
         
             //TODO: recursive, to support folders
             let addCollection structure (xParent:XElement) =
@@ -258,7 +239,7 @@ open XmlHelpers
 
 
         dest.TemplateData |> fillTemplateData parameters
-        dest.TemplateContent |> fillProjectCollection projectStructureItem
+        dest.TemplateContent |> fillProjectCollection parameters.Content
 
         dest.XElement
         

@@ -18,6 +18,22 @@ type ProjectType =
         | FSharp = 2
         | VisualBasic = 3
 
+// ref: http://msdn.microsoft.com/en-us/library/ms171397.aspx
+type ProjectTemplateLinkItem =
+    {   Name:string
+        Location:string }
+    
+// ref: http://msdn.microsoft.com/en-us/library/ms171399.aspx
+and SolutionFolderItem =
+    {   Name:string
+        ProjectStructureItem: SolutionItem list}
+    
+and SolutionItem =
+    | ProjectTemplateLink of ProjectTemplateLinkItem
+    | SolutionFolder of SolutionFolderItem
+
+type SolutionContent = SolutionContent of SolutionItem list
+
 type RootTemplate =
     {   Name:string
         Description:string
@@ -26,6 +42,7 @@ type RootTemplate =
         RequiredFrameworkVersion:string
         DefaultName:string
         CreateNewFolder:bool
+        Content:SolutionContent
         Wizard:WizardTemplate option} //TODO: use default if none
 
 type TemplateExportParameters = 
