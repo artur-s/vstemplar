@@ -1,8 +1,8 @@
 NUGET
   remote: http://nuget.org/api/v2
   specs:
-    FAKE (3.5.5)
-    FAKE.Core (3.5.5)
+    FAKE (3.5.6)
+    FAKE.Core (3.5.6)
     FSharp.Data (2.0.15)
       Zlib.Portable (>= 1.10.0)
     NuGet.CommandLine (2.8.2)
