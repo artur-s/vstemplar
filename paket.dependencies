@@ -6,3 +6,5 @@ nuget FSharp.Data ~> 2.0
 nuget Unquote ~> 2.2
 nuget xunit
 nuget Nuget.CommandLine
+nuget AutoFixture.AutoFoq
+nuget AutoFixture.xUnit

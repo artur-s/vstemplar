@@ -1,11 +1,21 @@
 NUGET
   remote: http://nuget.org/api/v2
   specs:
-    FAKE (3.5.6)
-    FAKE.Core (3.5.6)
+    AutoFixture (3.20.3)
+    AutoFixture.AutoFoq (3.20.2)
+      AutoFixture (>= 3.20.2)
+      Foq (>= 1.5.1)
+    AutoFixture.Xunit (3.20.2)
+      AutoFixture (>= 3.20.2)
+      xunit.extensions (>= 1.8.0.1549)
+    FAKE (3.5.7)
+    FAKE.Core (3.5.7)
+    Foq (1.6)
     FSharp.Data (2.0.15)
       Zlib.Portable (>= 1.10.0)
     NuGet.CommandLine (2.8.2)
     Unquote (2.2.2)
     xunit (1.9.2)
+    xunit.extensions (1.9.2)
+      xunit (1.9.2)
     Zlib.Portable (1.10.0)
