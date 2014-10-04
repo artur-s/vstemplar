@@ -220,8 +220,9 @@ open XmlHelpers
 
             let addTemplateLink (item:ProjectTemplateLinkItem) (collectionOfFolder:XElement) =
                 
-                let link = new Template.ProjectTemplateLink(item.Name, item.Location)
+                let link = new Template.ProjectTemplateLink(item.Name, "")
                             |> (fun tl -> tl.XElement.RemoveNodes(); tl)
+                link.XElement |> setXThisValue item.Location |> ignore
                 addChildXElem link.XElement collectionOfFolder |> ignore
                 link
                                 

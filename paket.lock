@@ -1,7 +1,7 @@
 NUGET
   remote: http://nuget.org/api/v2
   specs:
-    AutoFixture (3.20.3)
+    AutoFixture (3.20.2)
     AutoFixture.AutoFoq (3.20.2)
       AutoFixture (>= 3.20.2)
       Foq (>= 1.5.1)
@@ -15,7 +15,7 @@ NUGET
       Zlib.Portable (>= 1.10.0)
     NuGet.CommandLine (2.8.2)
     Unquote (2.2.2)
-    xunit (1.9.2)
-    xunit.extensions (1.9.2)
-      xunit (1.9.2)
+    xunit (1.8.0.1549)
+    xunit.extensions (1.8.0.1549)
+      xunit (>= 1.8.0.1549)
     Zlib.Portable (1.10.0)
