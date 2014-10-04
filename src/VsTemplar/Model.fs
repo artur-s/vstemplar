@@ -26,7 +26,7 @@ type ProjectTemplateLinkItem =
 // ref: http://msdn.microsoft.com/en-us/library/ms171399.aspx
 and SolutionFolderItem =
     {   Name:string
-        ProjectStructureItem: SolutionItem list}
+        ProjectStructureItem: SolutionItem seq}
     
 and SolutionItem =
     | ProjectTemplateLink of ProjectTemplateLinkItem

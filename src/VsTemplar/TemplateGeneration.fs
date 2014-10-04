@@ -193,8 +193,9 @@ open XmlHelpers
         
         let dest = Template.GetSample()
 
-        dest.TemplateContent.Project.XElement.Remove()
+        dest.TemplateContent.Project.XElement.Remove()  //TODO: move to fillTemplateData function
         dest.WizardData.XElement.Remove()
+        dest.WizardExtension.XElement.Remove()
         let xNameThis name = dest.XElement |> xName name 
         
         let fillTemplateData (parameters:RootTemplate) (templateData:Template.TemplateData) =
@@ -209,7 +210,7 @@ open XmlHelpers
                 |> setXElemValueNS (xNameThis "ProjectType") ( match parameters.ProjectType with 
                                                                | Some ptype -> sprintf "%A" ptype
                                                                | _ -> "")
-                |> setXElemValueNS (xNameThis "Icon") parameters.IconPath
+                |> setXElemValueNS (xNameThis "Icon") (if parameters.IconPath <> null then parameters.IconPath else "")
                 |> setXElemValueNS (xNameThis "RequiredFrameworkVersion") parameters.RequiredFrameworkVersion
     //            |> setXElemValueNS (xNameThis "TemplateGroupID") parameters.IconPath
                 |> setXElemValueNS (xNameThis "CreateNewFolder") (parameters.CreateNewFolder.ToString())
@@ -238,9 +239,13 @@ open XmlHelpers
             collection.XElement.RemoveNodes()
             addCollection projectsStructure collection.XElement
 
+        let fillWizardExtension (wizardParameters: WizardTemplate option) (wizardExtension:Template.WizardExtension) =
+            //TODO: generate WizardExtension
+            ()
 
         dest.TemplateData |> fillTemplateData parameters
         dest.TemplateContent |> fillProjectCollection parameters.Content
+        dest.WizardExtension |> fillWizardExtension parameters.Wizard
 
         dest.XElement
         

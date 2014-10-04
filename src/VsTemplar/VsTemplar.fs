@@ -85,6 +85,7 @@ module VsTemplate =
             | tg -> tg @@ "Template.zip"
 
         let exportedTemplatesTempDir = sprintf "%s%s%A" (Path.GetTempPath()) "VsTemplar_" (Guid.NewGuid())
+        let templateFileName = "MyTemplate.vstemplate"
         
         for projFileLocation in progFileLocations do
 
@@ -103,7 +104,7 @@ module VsTemplate =
             copyProjectFiles sourceProjectDir targetDir
 
             // check
-            let tempTarget = targetDir @@ "MyTemplate.vstemplate"
+            let tempTarget = targetDir @@ templateFileName
             tempTarget |> printfn "%s"
 
             CreateMetadataVsTemplateMetadata (fun p -> {p with 
@@ -113,15 +114,31 @@ module VsTemplate =
             if parameters.ProjectNameTemplateParameter <> null
                 then replaceProjectName parameters.ProjectNameTemplateParameter targetProgFileLocation
 
+       
+        let templateSources = !! (exportedTemplatesTempDir @@ "*/") |> List.ofSeq
+        
+        // creating root template
+        if templateSources.Length > 1 then 
+            match parameters.Root with
+            | Some root ->
+                let projectsRelativeLocations = progFileLocations 
+                                                |> List.map (fun pl -> ((fileName (dirPath pl)), ((fileName (dirPath pl)) @@ templateFileName))) // (dirPath >> fileName)
 
-        let templateSource = 
-            match !! (exportedTemplatesTempDir @@ "*/") |> List.ofSeq with
+                let content = seq { for (name,location) in projectsRelativeLocations
+                                    -> ProjectTemplateLink { Name = name; Location = location}}
+                                    |> SolutionContent 
+                let root = generateRootVsTemplate {root with RootTemplate.Content = content } 
+                root.Save(exportedTemplatesTempDir @@ "RootTemplate.vstemplate")
+            | _ -> ()
+
+        let templateSourceToZip = 
+            match templateSources with
             | singleProject::[] -> singleProject
             | _ -> exportedTemplatesTempDir
 
         // ensure destination folder
         dirPath templatesDestination |> Directory.CreateDirectory |> ignore
         
-        zipTemplateTo templateSource templatesDestination
+        zipTemplateTo templateSourceToZip templatesDestination
 
     //TODO: clear after copying

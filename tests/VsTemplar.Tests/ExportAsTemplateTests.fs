@@ -3,6 +3,8 @@
 open System
 open Xunit
 open VsTemplar
+open TestHelpers
+open Xunit.Extensions
 
 
 [<Fact>]
@@ -25,11 +27,27 @@ let ``It should create single project template containing project with custom pr
             ProjectNameTemplateParameter = "PutYourProjectNameHere"})
 
 
-[<Fact>]
-let ``It should create multiple project template in target directory`` = 
+[<Theory;AutoFoqData>]
+let ``It should create multiple project template in target directory`` 
+    (name:string)
+    (description:string)
+    (defaultName:string)
+    = 
+
+    let root = 
+        {Name = name
+         Description = description
+         IconPath = null
+         ProjectType = Some ProjectType.CSharp
+         RequiredFrameworkVersion = "4.0"
+         DefaultName = defaultName
+         CreateNewFolder = false
+         Content = SolutionContent []
+         Wizard = None}
 
     VsTemplate.ExportAsTemplate (fun p -> 
         {p with 
             SourceProjectDirectory = @"C:\Projects\Git\temp\MyProject\Src"
-            TargetDirectory = @"C:\Projects\Git\temp\MyProject\Template\MultipleTemplate.zip"})
+            TargetDirectory = @"C:\Projects\Git\temp\MyProject\Template\MultipleTemplate.zip"
+            Root = Some root})
 
