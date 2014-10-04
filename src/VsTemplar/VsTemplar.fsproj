@@ -52,6 +52,7 @@
   <Import Project="$(FSharpTargetsPath)" Condition="Exists('$(FSharpTargetsPath)')" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ItemGroup>
+    <Compile Include="Option.fs" />
     <Compile Include="ProjectContent.fs" />
     <Compile Include="SampleData.fs" />
     <Compile Include="XmlHelpers.fs" />
