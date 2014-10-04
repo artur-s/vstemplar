@@ -51,23 +51,5 @@ let ``It should create root VsTemplate XML containing correct ProjectTemplateLin
 //    (template.TemplateContent.ProjectCollection.ProjectTemplateLinks |> Seq.head).ProjectName |> shouldequal (templateLinks|> Seq.head)
 
 
-//[<Fact>]
-//let ``It should create root VsTemplate XML containing correct ProjectTemplateLink elements`` = 
-//    
-//    let templateLinks = [ProjectTemplateLink {ProjectTemplateLinkItem.Name = "a name"; Location = "SampleProject.Model\MyTemplate.vstemplate"}]
-//    let parameters = {rootParams with Content = SolutionContent templateLinks}
-//    
-//    // act
-//    let result = generateRootVsTemplate parameters
-//    let template = Template.VsTemplate(result)
-//    
-//    // assert
-//    template.TemplateContent.ProjectCollection.ProjectTemplateLinks.Length |> shouldequal templateLinks.Length
-////    (template.TemplateContent.ProjectCollection.ProjectTemplateLinks |> Seq.head).ProjectName |> shouldequal (templateLinks|> Seq.head)
-
-
-
-
-
 // ref: http://nikosbaxevanis.com/blog/2013/10/19/auto-mocking-with-foq-and-autofixture/
 //      http://blog.ploeh.dk/2010/10/08/AutoDataTheorieswithAutoFixture/

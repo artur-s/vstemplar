@@ -4,7 +4,7 @@ nuget FAKE ~> 3.4
 nuget FAKE.Core ~> 3.4
 nuget FSharp.Data ~> 2.0
 nuget Unquote ~> 2.2
-nuget xunit
+nuget xunit 1.8.0.1549
 nuget Nuget.CommandLine
 nuget AutoFixture.AutoFoq
 nuget AutoFixture.xUnit
