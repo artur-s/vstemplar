@@ -1,7 +1,7 @@
 NUGET
   remote: http://nuget.org/api/v2
   specs:
-    AutoFixture (3.20.3)
+    AutoFixture (3.20.2)
     AutoFixture.AutoFoq (3.20.2)
       AutoFixture (>= 3.20.2)
       Foq (>= 1.5.1)

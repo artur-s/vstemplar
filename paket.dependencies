@@ -8,3 +8,4 @@ nuget xunit 1.8.0.1549
 nuget Nuget.CommandLine
 nuget AutoFixture.AutoFoq
 nuget AutoFixture.xUnit
+nuget AutoFixture 3.20.2
