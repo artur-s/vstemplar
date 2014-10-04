@@ -32,7 +32,7 @@ and SolutionItem =
     | ProjectTemplateLink of ProjectTemplateLinkItem
     | SolutionFolder of SolutionFolderItem
 
-type SolutionContent = SolutionContent of SolutionItem list
+type SolutionContent = SolutionContent of SolutionItem seq
 
 type RootTemplate =
     {   Name:string
