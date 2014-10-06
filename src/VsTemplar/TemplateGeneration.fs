@@ -25,7 +25,6 @@ open XmlHelpers
   
     type CsProject = XmlProvider<SampleData.VsProject>
     type Template = XmlProvider<SampleData.VsTemplate>
-    
 
     let xName name (fromElement:XElement) = xNameNS name (fromElement.GetDefaultNamespace().NamespaceName)
 
@@ -191,11 +190,13 @@ open XmlHelpers
     //TODO: adding proper project to root template and update root wizard extension (provide ready Wizard dll)
     let generateRootVsTemplate (parameters:RootTemplate) = 
         
-        let dest = Template.GetSample()
+        let prepareTemplate (template:Template.VsTemplate) = 
+            template.TemplateContent.Project.XElement.Remove()  //TODO: move to fillTemplateData function
+            template.WizardData.XElement.Remove()
+            template.WizardExtension.XElement.Remove()    
+            template    
 
-        dest.TemplateContent.Project.XElement.Remove()  //TODO: move to fillTemplateData function
-        dest.WizardData.XElement.Remove()
-        dest.WizardExtension.XElement.Remove()
+        let dest = Template.GetSample() |> prepareTemplate
         let xNameThis name = dest.XElement |> xName name 
         
         let fillTemplateData (parameters:RootTemplate) (templateData:Template.TemplateData) =
