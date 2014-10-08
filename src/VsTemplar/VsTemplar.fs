@@ -67,7 +67,6 @@ module VsTemplate =
             // subdirectories containing VS project file: *.csproj, *.fsproj, *.vbproj
             !! (parameters.SourceProjectDirectory @@ @"**/*.?sproj")
         
-        // TODO: support multible. Single project for now
         let progFileLocations = 
             match sourceProjectsDirs |> List.ofSeq with
             | [] -> invalidArg "setParams.SourceProjecDirectory" "Source project location does not contain any VS projects"
@@ -121,12 +120,14 @@ module VsTemplate =
         if templateSources.Length > 1 then 
             match parameters.Root with
             | Some root ->
-                let projectsRelativeLocations = progFileLocations 
-                                                |> List.map (fun pl -> ((fileName (dirPath pl)), ((fileName (dirPath pl)) @@ templateFileName))) // (dirPath >> fileName)
+                let projectsRelativeLocations = 
+                    progFileLocations |> List.map (fun pl -> 
+                        let relativePath = (dirPath >> fileName) pl
+                        (relativePath, relativePath @@ templateFileName))
 
                 let content = seq { for (name,location) in projectsRelativeLocations
                                     -> ProjectTemplateLink { Name = name; Location = location}}
-                                    |> SolutionContent 
+                                    |> SolutionContent
                 let root = generateRootVsTemplate {root with RootTemplate.Content = content } 
                 root.Save(exportedTemplatesTempDir @@ "RootTemplate.vstemplate")
             | _ -> ()

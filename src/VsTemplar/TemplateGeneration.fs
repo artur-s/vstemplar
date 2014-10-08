@@ -55,7 +55,7 @@ open XmlHelpers
         let dest = Template.GetSample()
 
         dest.TemplateContent.ProjectCollection.XElement.Remove()
-        dest.WizardData.XElement.Remove()
+//        dest.WizardData.XElement.Remove()
 
 
         let xNameThis name = destTemplate.XElement |> xName name
@@ -170,15 +170,18 @@ open XmlHelpers
         //TODO: add proper project to root template and update root wizard extension (provide ready Wizard dll)
         
         
-        let setWizardExtension wizardParams (wizardElement:XElement) =
+        let setWizardExtension (wizardParams:WizardTemplate option) (wizardElement:Template.WizardExtension) (wizardData:Template.WizardData) =
             match wizardParams with
-            | Some wx -> wizardElement 
-                         |> setXElemValueNS (xNameThis "Assembly") (wx.Assembly.FullName) 
-                         |> setXElemValueNS (xNameThis "FullClassName") (wx.FullClassName) 
+            | Some wx -> wizardElement.XElement 
+                         |> setXElemValueNS (xNameThis "Assembly") (wx.Extension.Assembly.FullName) 
+                         |> setXElemValueNS (xNameThis "FullClassName") (wx.Extension.FullClassName) 
                          |> ignore
-            | _ -> wizardElement.Remove()
+//                         wizardData
+            | _ -> 
+                wizardElement.XElement.Remove() |> ignore
+                wizardData.XElement.Remove() |> ignore
         
-        dest.WizardExtension.XElement |> setWizardExtension (parameters.WizardTemplate)
+        dest.WizardData |> (dest.WizardExtension |> setWizardExtension (parameters.WizardTemplate))
         
 //TODO: dest.WizardData
 
@@ -192,8 +195,8 @@ open XmlHelpers
         
         let prepareTemplate (template:Template.VsTemplate) = 
             template.TemplateContent.Project.XElement.Remove()  //TODO: move to fillTemplateData function
-            template.WizardData.XElement.Remove()
-            template.WizardExtension.XElement.Remove()    
+//            template.WizardData.XElement.Remove()
+//            template.WizardExtension.XElement.Remove()    
             template    
 
         let dest = Template.GetSample() |> prepareTemplate
@@ -233,7 +236,7 @@ open XmlHelpers
             let addCollection structure (xParent:XElement) =
                 structure
                 |> Seq.iter (function 
-                            | ProjectTemplateLink i -> (xParent |> addTemplateLink i |> ignore) 
+                            | ProjectTemplateLink item -> (xParent |> addTemplateLink item |> ignore) 
                             | _ -> ())
 
             let collection = templateContent.ProjectCollection

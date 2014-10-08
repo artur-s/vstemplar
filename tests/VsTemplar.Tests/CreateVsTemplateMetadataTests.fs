@@ -23,6 +23,7 @@ let ``It should create VsTemplate metadata file based on provided VS project pat
         {p with 
             VsProjFileLocation = @"C:\Projects\Git\temp\MyProject\Src\MyProject.Common\MyProject.Common.csproj"
             Target = @"C:\Projects\Git\temp\MyProject\Template\MyTemplateWithWizard.vstemplate"
-            WizardTemplate = Some { Assembly = AssemblyName "MyProject.Template.Wizard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c9a76f51a8a9555f"
-                                    FullClassName = "MyProject.Template.Wizard.ChildWizard"}
+            WizardTemplate = Some { Extension = { WizardExtension.Assembly = AssemblyName "MyProject.Template.Wizard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c9a76f51a8a9555f"
+                                                  WizardExtension.FullClassName = "MyProject.Template.Wizard.ChildWizard"}
+                                    Data = ""}
             })

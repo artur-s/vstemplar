@@ -1,10 +1,17 @@
 ﻿namespace VsTemplar
 
+type WizardData = string
+
+type WizardExtension =
+    {
+        Assembly : System.Reflection.AssemblyName
+        FullClassName : string        
+    }
 
 type WizardTemplate =
     {
-        Assembly : System.Reflection.AssemblyName
-        FullClassName : string
+        Extension : WizardExtension
+        Data : WizardData
     }
 
 type MetadataCreationParameters =
