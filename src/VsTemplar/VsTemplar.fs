@@ -125,11 +125,14 @@ module VsTemplate =
                         let relativePath = (dirPath >> fileName) pl
                         (relativePath, relativePath @@ templateFileName))
 
-                let content = seq { for (name,location) in projectsRelativeLocations
-                                    -> ProjectTemplateLink { Name = name; Location = location}}
-                                    |> ExplicitContent
-                let root = generateRootVsTemplate {root with RootTemplate.Content = content } 
-                root.Save(exportedTemplatesTempDir @@ "RootTemplate.vstemplate")
+                let content = match root.Content with
+                              | ExplicitContent _  as explicit -> explicit 
+                              | InferredContent -> seq { for (name,location) in projectsRelativeLocations
+                                                          -> ProjectTemplateLink { Name = name; Location = location}}
+                                                       |> ExplicitContent
+
+                let rootXml = generateRootVsTemplate {root with RootTemplate.Content = content } 
+                rootXml.Save(exportedTemplatesTempDir @@ "RootTemplate.vstemplate")
             | _ -> ()
 
         let templateSourceToZip = 
