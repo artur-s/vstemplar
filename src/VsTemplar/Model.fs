@@ -39,7 +39,9 @@ and SolutionItem =
     | ProjectTemplateLink of ProjectTemplateLinkItem
     | SolutionFolder of SolutionFolderItem
 
-type SolutionContent = SolutionContent of SolutionItem seq
+type SolutionContent = 
+    | ExplicitContent of SolutionItem seq
+    | InferredContent
 
 type RootTemplate =
     {   Name:string

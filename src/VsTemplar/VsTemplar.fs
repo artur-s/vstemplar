@@ -127,7 +127,7 @@ module VsTemplate =
 
                 let content = seq { for (name,location) in projectsRelativeLocations
                                     -> ProjectTemplateLink { Name = name; Location = location}}
-                                    |> SolutionContent
+                                    |> ExplicitContent
                 let root = generateRootVsTemplate {root with RootTemplate.Content = content } 
                 root.Save(exportedTemplatesTempDir @@ "RootTemplate.vstemplate")
             | _ -> ()

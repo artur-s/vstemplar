@@ -20,7 +20,7 @@ let rootParams = {
         IconPath = ""
         DefaultName = "NewSampleProject"
         CreateNewFolder = false
-        Content = SolutionContent []}
+        Content = ExplicitContent []}
 
 [<Fact>]
 let ``It should create root VsTemplate XML containing provided template data`` = 
@@ -42,7 +42,7 @@ let ``It should create root VsTemplate XML containing correct ProjectTemplateLin
     = 
     
     let solutionItems:SolutionItem seq = templateLinks |> Seq.map (ProjectTemplateLink)
-    let parameters = {rootParams with Content = SolutionContent solutionItems}
+    let parameters = {rootParams with Content = ExplicitContent solutionItems}
     
     // act
     let result = generateRootVsTemplate parameters

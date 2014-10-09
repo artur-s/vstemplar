@@ -221,7 +221,7 @@ open XmlHelpers
                 |> ignore
             //TODO: finish
 
-        let fillProjectCollection (SolutionContent projectsStructure) (templateContent:Template.TemplateContent) =
+        let fillProjectCollection (ExplicitContent projectsStructure) (templateContent:Template.TemplateContent) =
 
             let addTemplateLink (item:ProjectTemplateLinkItem) (collectionOfFolder:XElement) =
                 

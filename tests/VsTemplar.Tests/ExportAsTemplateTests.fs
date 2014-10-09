@@ -42,7 +42,7 @@ let ``It should create multiple project template in target directory``
          RequiredFrameworkVersion = "4.0"
          DefaultName = defaultName
          CreateNewFolder = false
-         Content = SolutionContent []
+         Content = InferredContent
          Wizard = None}
 
     VsTemplate.ExportAsTemplate (fun p -> 
