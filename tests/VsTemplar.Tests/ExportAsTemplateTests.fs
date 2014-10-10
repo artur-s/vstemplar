@@ -74,7 +74,7 @@ module ``When root template items should are provided`` =
                             ProjectTemplateLink {ProjectTemplateLinkItem.Name = "$safeprojectname$.Model"; Location = "PutYourApiNameHere.Model\MyTemplate.vstemplate"} 
                             ProjectTemplateLink {ProjectTemplateLinkItem.Name = "$safeprojectname$.WebApi"; Location = "PutYourApiNameHere.WebApi\MyTemplate.vstemplate"}]
                 Wizard = Some { 
-                            Extension = { Assembly = AssemblyName "IQ.Platform.WebApi.Template.Wizard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c9a76f51a8a9555f"
+                            Extension = { Assembly = AssemblyName "MyNamespace.Template.Wizard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c9a76f51a8a9555f"
                                           FullClassName = "MyNamespace.Template.Wizard.RootWizard"}
                             Data = ""}}
 

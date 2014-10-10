@@ -26,7 +26,6 @@ open XmlHelpers
     type CsProject = XmlProvider<SampleData.VsProject>
     type Template = XmlProvider<SampleData.VsTemplate>
 
-    let xName name (fromElement:XElement) = xNameNS name (fromElement.GetDefaultNamespace().NamespaceName)
 
     let projectType parameters =
         match System.IO.Path.GetExtension parameters.VsProjFileLocation with
@@ -38,6 +37,20 @@ open XmlHelpers
             | ".vbproj" -> "VisualBasic"
             | _ -> failwith "Not supported project type"
         | _ -> failwith "Cannot determine Visual Studio project type"
+
+
+    let setWizardExtension (wizardParams:WizardTemplate option) (xName: string -> XName) (wizardElement:Template.WizardExtension, wizardData:Template.WizardData) =
+        match wizardParams with
+        | Some wx -> wizardElement.XElement 
+                        |> setXElemValueNS (xName "Assembly") (wx.Extension.Assembly.FullName) 
+                        |> setXElemValueNS (xName "FullClassName") (wx.Extension.FullClassName) 
+                        |> ignore
+                     wizardData.XElement |> setXThisValue wx.Data
+                        |> ignore
+        | _ -> 
+            wizardElement.XElement.Remove() |> ignore
+            wizardData.XElement.Remove() |> ignore
+        
 
     let generateSingleProjectVsTemplate (parameters:MetadataCreationParameters) =
 
@@ -53,12 +66,11 @@ open XmlHelpers
 
         let destTemplate = Template.GetSample()
         let dest = Template.GetSample()
+        let xNameThis name = destTemplate.XElement |> xNameDefNs name
 
         dest.TemplateContent.ProjectCollection.XElement.Remove()
 //        dest.WizardData.XElement.Remove()
 
-
-        let xNameThis name = destTemplate.XElement |> xName name
 
         dest.TemplateData.XElement 
         |> setXElemValueNS (xNameThis "Name") projectName
@@ -166,28 +178,10 @@ open XmlHelpers
            
         let items = processCsProjectItems sourceProj project
 
-
-        //TODO: add proper project to root template and update root wizard extension (provide ready Wizard dll)
+        let xNameThis name = destTemplate.XElement |> xNameDefNs name
+        (dest.WizardExtension, dest.WizardData) |> setWizardExtension (parameters.WizardTemplate) xNameThis
         
-        
-        let setWizardExtension (wizardParams:WizardTemplate option) (wizardElement:Template.WizardExtension) (wizardData:Template.WizardData) =
-            match wizardParams with
-            | Some wx -> wizardElement.XElement 
-                         |> setXElemValueNS (xNameThis "Assembly") (wx.Extension.Assembly.FullName) 
-                         |> setXElemValueNS (xNameThis "FullClassName") (wx.Extension.FullClassName) 
-                         |> ignore
-//                         wizardData
-            | _ -> 
-                wizardElement.XElement.Remove() |> ignore
-                wizardData.XElement.Remove() |> ignore
-        
-        dest.WizardData |> (dest.WizardExtension |> setWizardExtension (parameters.WizardTemplate))
-        
-//TODO: dest.WizardData
-
-
         dest.XElement
-
   
 
     //TODO: adding proper project to root template and update root wizard extension (provide ready Wizard dll)
@@ -195,12 +189,10 @@ open XmlHelpers
         
         let prepareTemplate (template:Template.VsTemplate) = 
             template.TemplateContent.Project.XElement.Remove()  //TODO: move to fillTemplateData function
-//            template.WizardData.XElement.Remove()
-//            template.WizardExtension.XElement.Remove()    
             template    
 
         let dest = Template.GetSample() |> prepareTemplate
-        let xNameThis name = dest.XElement |> xName name 
+        let xNameThis name = dest.XElement |> xNameDefNs name 
         
         let fillTemplateData (parameters:RootTemplate) (templateData:Template.TemplateData) =
             
@@ -243,13 +235,10 @@ open XmlHelpers
             collection.XElement.RemoveNodes()
             addCollection projectsStructure collection.XElement
 
-        let fillWizardExtension (wizardParameters: WizardTemplate option) (wizardExtension:Template.WizardExtension) =
-            //TODO: generate WizardExtension
-            ()
 
         dest.TemplateData |> fillTemplateData parameters
         dest.TemplateContent |> fillProjectCollection parameters.Content
-        dest.WizardExtension |> fillWizardExtension parameters.Wizard
+        (dest.WizardExtension, dest.WizardData) |> setWizardExtension parameters.Wizard xNameThis
 
         dest.XElement
         

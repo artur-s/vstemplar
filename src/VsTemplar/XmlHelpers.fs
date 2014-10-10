@@ -6,6 +6,9 @@ open System.Xml.Linq
 let xName name = XName.op_Implicit name 
 let xNameNS name ns = XName.Get(name, ns)
 
+let xNameDefNs name (fromElement:XElement) = xNameNS name (fromElement.GetDefaultNamespace().NamespaceName)
+
+
 let getXElemNS childName (elem:XElement) = 
     Option.ofNullable <| elem.Element(childName)
 
