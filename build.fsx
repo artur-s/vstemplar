@@ -54,6 +54,7 @@ let gitName = "vstemplar"
 // END TODO: The rest of the file includes standard build steps 
 // --------------------------------------------------------------------------------------
 let buildDir = "./bin/"
+let buildMergedDir = buildDir @@ "merged"
 let nugetDir = "./nuget/"
 let packagesDir = "./packages/"
 
@@ -89,6 +90,11 @@ Target "CleanDocs" (fun _ ->
 // --------------------------------------------------------------------------------------
 // Build library & test project
 
+//Target "Build" (fun _ ->
+//    !! solutionFile
+//    |> MSBuildRelease "" "Rebuild"
+//    |> ignore
+//)
 Target "Build" (fun _ ->
     { BaseDirectory = __SOURCE_DIRECTORY__
       Includes = [ solutionFile +       ".sln"
@@ -121,6 +127,23 @@ FinalTarget "CloseTestRunner" (fun _ ->
 
 // --------------------------------------------------------------------------------------
 // Build a NuGet package
+//
+Target "MergeAssemblies" (fun _ ->
+    CreateDir buildMergedDir
+
+    let toPack =
+        ["VsTemplar.dll"; "FSharp.Core.dll"; "FakeLib.dll"; "FSharp.Data.dll"; "FSharp.Data.TypeProviders.dll"; "ICSharpCode.SharpZipLib.dll"]
+        |> List.map (fun l -> buildDir @@ l)
+        |> separated " "
+
+    let result =
+        ExecProcess (fun info ->
+            info.FileName <- currentDirectory @@ "tools" @@ "ILRepack" @@ "ILRepack.exe"
+            info.Arguments <- sprintf "/internalize /verbose /lib:%s /ver:%s /out:%s %s" buildDir release.AssemblyVersion (buildMergedDir @@ "VsTemplar.dll") toPack
+            ) (TimeSpan.FromMinutes 5.)
+
+    if result <> 0 then failwithf "Error during ILRepack execution."
+)
 
 Target "NuGet" (fun _ ->
     // Format the description to fit on a single line (remove \r\n and double-spaces)
@@ -190,6 +213,7 @@ Target "All" DoNothing
   ==> "CleanDocs"
 //  ==> "GenerateDocs"
 //  ==> "ReleaseDocs"
+  ==> "MergeAssemblies"
   ==> "NuGet"
   ==> "Release"
 
