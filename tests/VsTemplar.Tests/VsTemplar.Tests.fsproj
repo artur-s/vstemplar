@@ -61,6 +61,14 @@
   -->
   <Import Project="$(SolutionDir)\.paket\paket.targets" />
   <ItemGroup>
+    <Content Include="net40\Foq.Usage.fsx">
+      <Paket>True</Paket>
+    </Content>
+    <Content Include="net45\Foq.Usage.fsx">
+      <Paket>True</Paket>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="UnquoteAssertionsAliases.fs" />
     <Compile Include="TestHelpers.fs" />
     <Content Include="app.config" />
@@ -92,17 +100,266 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
-        <Reference Include="Ploeh.AutoFixture">
-          <HintPath>..\..\packages\AutoFixture\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+        <Reference Include="FSharp.Data">
+          <HintPath>..\..\packages\FSharp.Data\lib\net40\FSharp.Data.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5'">
       <ItemGroup>
-        <Reference Include="Ploeh.AutoFixture">
-          <HintPath>..\..\packages\AutoFixture\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+        <Reference Include="FSharp.Data">
+          <HintPath>..\..\packages\FSharp.Data\lib\net40\FSharp.Data.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+      <ItemGroup>
+        <Reference Include="FSharp.Data">
+          <HintPath>..\..\packages\FSharp.Data\lib\net40\FSharp.Data.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETPortable' And $(TargetFrameworkProfile) == 'net40+sl5+wp8+win8' And $(TargetPlatformIdentifier) == 'Portable' And $(TargetPlatformVersion) == '7.0'">
+      <ItemGroup>
+        <Reference Include="FSharp.Data">
+          <HintPath>..\..\packages\FSharp.Data\lib\portable-net40+sl5+wp8+win8\FSharp.Data.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'Windows' And $(TargetPlatformVersion) == 'v8.0'">
+      <ItemGroup>
+        <Reference Include="FSharp.Data">
+          <HintPath>..\..\packages\FSharp.Data\lib\portable-net40+sl5+wp8+win8\FSharp.Data.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'WindowsPhoneApp' And $(TargetPlatformVersion) == 'v8.0'">
+      <ItemGroup>
+        <Reference Include="FSharp.Data">
+          <HintPath>..\..\packages\FSharp.Data\lib\portable-net40+sl5+wp8+win8\FSharp.Data.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'Silverlight' And $(SilverlightVersion) == 'v5.0'">
+      <ItemGroup>
+        <Reference Include="FSharp.Data">
+          <HintPath>..\..\packages\FSharp.Data\lib\portable-net40+sl5+wp8+win8\FSharp.Data.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="Zlib.Portable">
+          <HintPath>..\..\packages\Zlib.Portable\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5'">
+      <ItemGroup>
+        <Reference Include="Zlib.Portable">
+          <HintPath>..\..\packages\Zlib.Portable\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+      <ItemGroup>
+        <Reference Include="Zlib.Portable">
+          <HintPath>..\..\packages\Zlib.Portable\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETPortable' And $(TargetFrameworkProfile) == 'Profile136' And $(TargetPlatformIdentifier) == 'Portable' And $(TargetPlatformVersion) == '7.0'">
+      <ItemGroup>
+        <Reference Include="Zlib.Portable">
+          <HintPath>..\..\packages\Zlib.Portable\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'MonoAndroid'">
+      <ItemGroup>
+        <Reference Include="Zlib.Portable">
+          <HintPath>..\..\packages\Zlib.Portable\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'MonoTouch'">
+      <ItemGroup>
+        <Reference Include="Zlib.Portable">
+          <HintPath>..\..\packages\Zlib.Portable\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'Windows' And $(TargetPlatformVersion) == 'v8.0'">
+      <ItemGroup>
+        <Reference Include="Zlib.Portable">
+          <HintPath>..\..\packages\Zlib.Portable\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'WindowsPhoneApp' And $(TargetPlatformVersion) == 'v8.0'">
+      <ItemGroup>
+        <Reference Include="Zlib.Portable">
+          <HintPath>..\..\packages\Zlib.Portable\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'WindowsPhoneApp' And $(TargetPlatformVersion) == 'v8.1'">
+      <ItemGroup>
+        <Reference Include="Zlib.Portable">
+          <HintPath>..\..\packages\Zlib.Portable\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'Silverlight' And $(SilverlightVersion) == 'v5.0'">
+      <ItemGroup>
+        <Reference Include="Zlib.Portable">
+          <HintPath>..\..\packages\Zlib.Portable\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="Unquote">
+          <HintPath>..\..\packages\Unquote\lib\net40\Unquote.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5'">
+      <ItemGroup>
+        <Reference Include="Unquote">
+          <HintPath>..\..\packages\Unquote\lib\net40\Unquote.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+      <ItemGroup>
+        <Reference Include="Unquote">
+          <HintPath>..\..\packages\Unquote\lib\net40\Unquote.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'Silverlight' And $(SilverlightVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="Unquote">
+          <HintPath>..\..\packages\Unquote\lib\sl4\Unquote.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v1.0'">
+      <ItemGroup>
+        <Reference Include="xunit">
+          <HintPath>..\..\packages\xunit\lib\xunit.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v1.1'">
+      <ItemGroup>
+        <Reference Include="xunit">
+          <HintPath>..\..\packages\xunit\lib\xunit.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v2.0'">
+      <ItemGroup>
+        <Reference Include="xunit">
+          <HintPath>..\..\packages\xunit\lib\xunit.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="xunit">
+          <HintPath>..\..\packages\xunit\lib\xunit.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0' And $(TargetFrameworkProfile) == 'Client'">
+      <ItemGroup>
+        <Reference Include="xunit">
+          <HintPath>..\..\packages\xunit\lib\xunit.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="xunit">
+          <HintPath>..\..\packages\xunit\lib\xunit.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5'">
+      <ItemGroup>
+        <Reference Include="xunit">
+          <HintPath>..\..\packages\xunit\lib\xunit.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+      <ItemGroup>
+        <Reference Include="xunit">
+          <HintPath>..\..\packages\xunit\lib\xunit.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -119,7 +376,16 @@
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5'">
+      <ItemGroup>
+        <Reference Include="Ploeh.AutoFixture.AutoFoq">
+          <HintPath>..\..\packages\AutoFixture.AutoFoq\lib\net40\Ploeh.AutoFixture.AutoFoq.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Ploeh.AutoFixture.AutoFoq">
           <HintPath>..\..\packages\AutoFixture.AutoFoq\lib\net40\Ploeh.AutoFixture.AutoFoq.dll</HintPath>
@@ -132,37 +398,26 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
-        <Reference Include="Ploeh.AutoFixture.Xunit">
-          <HintPath>..\..\packages\AutoFixture.Xunit\lib\net40\Ploeh.AutoFixture.Xunit.dll</HintPath>
+        <Reference Include="Ploeh.AutoFixture">
+          <HintPath>..\..\packages\AutoFixture\lib\net40\Ploeh.AutoFixture.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5'">
       <ItemGroup>
-        <Reference Include="Ploeh.AutoFixture.Xunit">
-          <HintPath>..\..\packages\AutoFixture.Xunit\lib\net40\Ploeh.AutoFixture.Xunit.dll</HintPath>
+        <Reference Include="Ploeh.AutoFixture">
+          <HintPath>..\..\packages\AutoFixture\lib\net40\Ploeh.AutoFixture.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
       </ItemGroup>
     </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
-        <Reference Include="FSharp.Data">
-          <HintPath>..\..\packages\FSharp.Data\lib\net40\FSharp.Data.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework'">
-      <ItemGroup>
-        <Reference Include="FSharp.Data">
-          <HintPath>..\..\packages\FSharp.Data\lib\net40\FSharp.Data.dll</HintPath>
+        <Reference Include="Ploeh.AutoFixture">
+          <HintPath>..\..\packages\AutoFixture\lib\net40\Ploeh.AutoFixture.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -188,7 +443,7 @@
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Foq">
           <HintPath>..\..\packages\Foq\lib\net45\Foq.dll</HintPath>
@@ -201,17 +456,26 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
-        <Reference Include="Unquote">
-          <HintPath>..\..\packages\Unquote\lib\net40\Unquote.dll</HintPath>
+        <Reference Include="Ploeh.AutoFixture.Xunit">
+          <HintPath>..\..\packages\AutoFixture.Xunit\lib\net40\Ploeh.AutoFixture.Xunit.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5'">
       <ItemGroup>
-        <Reference Include="Unquote">
-          <HintPath>..\..\packages\Unquote\lib\net40\Unquote.dll</HintPath>
+        <Reference Include="Ploeh.AutoFixture.Xunit">
+          <HintPath>..\..\packages\AutoFixture.Xunit\lib\net40\Ploeh.AutoFixture.Xunit.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+      <ItemGroup>
+        <Reference Include="Ploeh.AutoFixture.Xunit">
+          <HintPath>..\..\packages\AutoFixture.Xunit\lib\net40\Ploeh.AutoFixture.Xunit.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -219,67 +483,7 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == 'Silverlight' And $(SilverlightVersion) == 'v4.0'">
-      <ItemGroup>
-        <Reference Include="Unquote">
-          <HintPath>..\..\packages\Unquote\lib\sl4\Unquote.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <When Condition="$(TargetFrameworkIdentifier) == 'Silverlight'">
-      <ItemGroup>
-        <Reference Include="Unquote">
-          <HintPath>..\..\packages\Unquote\lib\sl4\Unquote.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETPortable' And $(TargetFrameworkProfile) == 'Profile136' And $(TargetPlatformIdentifier) == 'Portable' And $(TargetPlatformVersion) == '7.0'">
-      <ItemGroup>
-        <Reference Include="Zlib.Portable">
-          <HintPath>..\..\packages\Zlib.Portable\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETPortable'">
-      <ItemGroup>
-        <Reference Include="Zlib.Portable">
-          <HintPath>..\..\packages\Zlib.Portable\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="true">
-      <ItemGroup>
-        <Reference Include="xunit">
-          <HintPath>..\..\packages\xunit\lib\xunit.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework'">
-      <ItemGroup>
-        <Reference Include="xunit">
-          <HintPath>..\..\packages\xunit\lib\xunit.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="true">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v1.0'">
       <ItemGroup>
         <Reference Include="xunit.extensions">
           <HintPath>..\..\packages\xunit.extensions\lib\xunit.extensions.dll</HintPath>
@@ -288,7 +492,61 @@
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v1.1'">
+      <ItemGroup>
+        <Reference Include="xunit.extensions">
+          <HintPath>..\..\packages\xunit.extensions\lib\xunit.extensions.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v2.0'">
+      <ItemGroup>
+        <Reference Include="xunit.extensions">
+          <HintPath>..\..\packages\xunit.extensions\lib\xunit.extensions.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="xunit.extensions">
+          <HintPath>..\..\packages\xunit.extensions\lib\xunit.extensions.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0' And $(TargetFrameworkProfile) == 'Client'">
+      <ItemGroup>
+        <Reference Include="xunit.extensions">
+          <HintPath>..\..\packages\xunit.extensions\lib\xunit.extensions.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="xunit.extensions">
+          <HintPath>..\..\packages\xunit.extensions\lib\xunit.extensions.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5'">
+      <ItemGroup>
+        <Reference Include="xunit.extensions">
+          <HintPath>..\..\packages\xunit.extensions\lib\xunit.extensions.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="xunit.extensions">
           <HintPath>..\..\packages\xunit.extensions\lib\xunit.extensions.dll</HintPath>
@@ -298,12 +556,4 @@
       </ItemGroup>
     </When>
   </Choose>
-  <ItemGroup>
-    <Content Include="net40\Foq.Usage.fsx">
-      <Paket>True</Paket>
-    </Content>
-    <Content Include="net45\Foq.Usage.fsx">
-      <Paket>True</Paket>
-    </Content>
-  </ItemGroup>
 </Project>
