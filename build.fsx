@@ -2,7 +2,7 @@
 // FAKE build script 
 // --------------------------------------------------------------------------------------
 
-#r @"packages/FAKE/tools/FakeLib.dll"
+#r @"packages/FAKE.Core/tools/FakeLib.dll"
 open Fake 
 open Fake.Git
 open Fake.AssemblyInfoFile
@@ -132,7 +132,8 @@ Target "MergeAssemblies" (fun _ ->
     CreateDir buildMergedDir
 
     let toPack =
-        ["VsTemplar.dll"; "FSharp.Core.dll"; "FakeLib.dll"; "FSharp.Data.dll"; "FSharp.Data.TypeProviders.dll"; "ICSharpCode.SharpZipLib.dll"]
+        ["VsTemplar.dll"; "FSharp.Core.dll"; "FakeLib.dll"; "FSharp.Data.dll"; (*"FSharp.Data.TypeProviders.dll"; *) 
+         "ICSharpCode.SharpZipLib.dll"; "Zlib.Portable.dll"]
         |> List.map (fun l -> buildDir @@ l)
         |> separated " "
 
