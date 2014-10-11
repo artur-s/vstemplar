@@ -20,6 +20,9 @@ module VsTemplate =
         let template = generateSingleProjectVsTemplate parameters
         template.Save(parameters.Target)
 
+    
+//    let CreateMetadataVsTemplateMetadataInterop (setParam:Func<MetadataCreationParameters,MetadataCreationParameters>) =
+//        CreateMetadataVsTemplateMetadata(setParam.Invoke)
 
     open VsTemplar
 
@@ -54,7 +57,8 @@ module VsTemplate =
             SourceProjectDirectory = null
             TargetDirectory = null
             ProjectNameTemplateParameter = "$safeprojectname$"
-            Root = None}
+            Root = None
+            ChildWizard = None}
 
         let validateParameters ps =
             if String.IsNullOrWhiteSpace (ps.SourceProjectDirectory) then
@@ -108,7 +112,8 @@ module VsTemplate =
 
             CreateMetadataVsTemplateMetadata (fun p -> {p with 
                                                             VsProjFileLocation = projFileLocation
-                                                            Target = tempTarget})
+                                                            Target = tempTarget
+                                                            WizardTemplate = parameters.ChildWizard})
 
             if parameters.ProjectNameTemplateParameter <> null
                 then replaceProjectName parameters.ProjectNameTemplateParameter targetProgFileLocation

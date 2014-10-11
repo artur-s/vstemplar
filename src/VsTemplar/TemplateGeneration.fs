@@ -196,6 +196,8 @@ open XmlHelpers
         
         let fillTemplateData (parameters:RootTemplate) (templateData:Template.TemplateData) =
             
+            let stringOrEmpty (s:string) = if s <> null then s else ""
+
             let projectName = parameters.Name
 
             templateData.XElement
@@ -206,10 +208,13 @@ open XmlHelpers
                 |> setXElemValueNS (xNameThis "ProjectType") ( match parameters.ProjectType with 
                                                                | Some ptype -> sprintf "%A" ptype
                                                                | _ -> "")
-                |> setXElemValueNS (xNameThis "Icon") (if parameters.IconPath <> null then parameters.IconPath else "")
+                |> setXElemValueNS (xNameThis "TemplateGroupID") (parameters.TemplateGroupID |> stringOrEmpty) |> removeXNodeIfEmpty
+                |> setXElemValueNS (xNameThis "ProjectSubType") (parameters.ProjectSubType |> stringOrEmpty) |> removeXNodeIfEmpty
+                |> setXElemValueNS (xNameThis "DefaultName") (parameters.DefaultName |> stringOrEmpty)
+                |> setXElemValueNS (xNameThis "Icon") (parameters.IconPath |> stringOrEmpty) |> removeXNodeIfEmpty
                 |> setXElemValueNS (xNameThis "RequiredFrameworkVersion") parameters.RequiredFrameworkVersion
-    //            |> setXElemValueNS (xNameThis "TemplateGroupID") parameters.IconPath
                 |> setXElemValueNS (xNameThis "CreateNewFolder") (parameters.CreateNewFolder.ToString())
+                // TODO: DefaultName
                 |> ignore
             //TODO: finish
 

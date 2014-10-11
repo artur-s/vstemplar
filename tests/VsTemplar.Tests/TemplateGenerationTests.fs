@@ -6,7 +6,6 @@ open TemplateGeneration
 open Xunit.Extensions
 open TestHelpers
 //open FsUnit
-
 //open FsUnit.Xunit  // https://github.com/fsharp/FsUnit
 
 let shouldequal<'T> (expected:'T) (actual:'T) = Assert.Equal(expected,actual)
@@ -15,6 +14,8 @@ let rootParams = {
         Name = "Sample Project"
         Description = "This is a sample project"
         ProjectType = Some ProjectType.FSharp
+        ProjectSubType = ""
+        TemplateGroupID = ""
         RequiredFrameworkVersion = "4.0"
         Wizard = None
         IconPath = ""

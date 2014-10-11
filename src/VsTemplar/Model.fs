@@ -50,6 +50,8 @@ type RootTemplate =
         Description:string
         IconPath:string
         ProjectType:ProjectType option
+        ProjectSubType:string
+        TemplateGroupID:string
         RequiredFrameworkVersion:string
         DefaultName:string
         CreateNewFolder:bool
@@ -61,5 +63,6 @@ type TemplateExportParameters =
         TargetDirectory : string
         /// a template parameter for project name in VS project file. Default is '$safeprojectname$'
         ProjectNameTemplateParameter:string
-        Root:RootTemplate option}
+        Root:RootTemplate option
+        ChildWizard:WizardTemplate option}
 

@@ -18,6 +18,9 @@ module VsTemplate =
     ///
     val CreateMetadataVsTemplateMetadata : setParams:(MetadataCreationParameters -> MetadataCreationParameters) -> unit
 
+//    val CreateMetadataVsTemplateMetadataInterop : setParam:(System.Func<MetadataCreationParameters,MetadataCreationParameters>) -> unit
+
+
     //TODO: update usage sample
     /// Creates zipped template file from source project.
     /// ## Parameters

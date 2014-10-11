@@ -21,6 +21,11 @@ let setXElemValueNS childName newValue (elem:XElement) =
     | None -> ()
     elem
 
+let removeXNodeIfEmpty (elem:XElement)=
+    if elem.Ancestors() |> Seq.isEmpty && elem.Value = "" then
+        elem.Remove()
+    elem
+
 let setXElemValue childName newValue (elem:XElement) = 
     setXElemValueNS (xName childName) newValue elem
 

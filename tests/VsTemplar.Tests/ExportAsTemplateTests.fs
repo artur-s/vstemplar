@@ -33,6 +33,8 @@ module ``When root template items should be inferred`` =
         (name:string)
         (description:string)
         (defaultName:string)
+        (projSubType:string)
+        (templateGroupID:string)
         = 
 
         let root = 
@@ -44,7 +46,9 @@ module ``When root template items should be inferred`` =
                 DefaultName = defaultName
                 CreateNewFolder = false
                 Content = InferredContent
-                Wizard = None}
+                Wizard = None
+                ProjectSubType = projSubType
+                TemplateGroupID = templateGroupID}
 
         VsTemplate.ExportAsTemplate (fun p -> 
             {p with 
@@ -60,6 +64,8 @@ module ``When root template items should are provided`` =
         (name:string)
         (description:string)
         (defaultName:string)
+        (projSubType:string)
+        (templateGroupID:string)
         = 
 
         let root = 
@@ -76,10 +82,17 @@ module ``When root template items should are provided`` =
                 Wizard = Some { 
                             Extension = { Assembly = AssemblyName "MyNamespace.Template.Wizard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c9a76f51a8a9555f"
                                           FullClassName = "MyNamespace.Template.Wizard.RootWizard"}
-                            Data = ""}}
+                            Data = ""}
+                ProjectSubType = projSubType
+                TemplateGroupID = templateGroupID}
 
         VsTemplate.ExportAsTemplate (fun p -> 
             {p with 
                 SourceProjectDirectory = @"C:\Projects\Git\temp\MyProject\Src"
                 TargetDirectory = @"C:\Projects\Git\temp\MyProject\Template\MultipleTemplateProvidedProjectItems.zip"
-                Root = Some root})
+                Root = Some root
+                ChildWizard = Some { 
+                                Extension = { Assembly = AssemblyName "MyNamespace.Template.Wizard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c9a76f51a8a9555f"
+                                              FullClassName = "MyNamespace.Template.Wizard.ChildWizard"}
+                                Data = ""}
+                })

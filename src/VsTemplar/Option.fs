@@ -9,4 +9,7 @@ let filter p = function
     | Some v -> if p v then Some v else None
     | _ -> None
 
-let ofNullable = function | null -> None | i -> Some i
+let ofNullable<'T when 'T : null> (value:'T) = 
+    match value with 
+    | null -> None 
+    | i -> Some i
