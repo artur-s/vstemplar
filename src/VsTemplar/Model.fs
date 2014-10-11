@@ -24,6 +24,8 @@ type ProjectType =
         | CSharp = 1
         | FSharp = 2
         | VisualBasic = 3
+        | VS = 4
+        | Web = 5
 
 // ref: http://msdn.microsoft.com/en-us/library/ms171397.aspx
 type ProjectTemplateLinkItem =
