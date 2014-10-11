@@ -20,6 +20,8 @@ type MetadataCreationParameters =
         Target: string
         WizardTemplate : WizardTemplate option } // seq
 
+type TemplateType = Project = 1 | ProjectGroup = 2
+
 type ProjectType =
         | CSharp = 1
         | FSharp = 2

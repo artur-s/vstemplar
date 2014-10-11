@@ -51,6 +51,7 @@ let ``It should create root VsTemplate XML containing correct ProjectTemplateLin
     
     
     // assert
+    template.Type |> shouldequal (TemplateType.ProjectGroup.ToString())
     let actualLinks = template.TemplateContent.ProjectCollection.ProjectTemplateLinks
     actualLinks.Length |> shouldequal (templateLinks |> Seq.length)
 

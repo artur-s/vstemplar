@@ -192,7 +192,7 @@ open XmlHelpers
             template    
 
         let dest = Template.GetSample() |> prepareTemplate
-        let xNameThis name = dest.XElement |> xNameDefNs name 
+        let xNameThis name = dest.XElement |> xNameDefNs name
         
         let fillTemplateData (parameters:RootTemplate) (templateData:Template.TemplateData) =
             
@@ -240,7 +240,7 @@ open XmlHelpers
             collection.XElement.RemoveNodes()
             addCollection projectsStructure collection.XElement
 
-
+        dest.XElement |> setXAttrValue "Type" (TemplateType.ProjectGroup.ToString()) |> ignore
         dest.TemplateData |> fillTemplateData parameters
         dest.TemplateContent |> fillProjectCollection parameters.Content
         (dest.WizardExtension, dest.WizardData) |> setWizardExtension parameters.Wizard xNameThis
