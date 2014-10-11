@@ -21,7 +21,7 @@ open System
 
 // The name of the project 
 // (used by attributes in AssemblyInfo, name of a NuGet package and directory in 'src')
-let project = "VsTemplar"//"FSharp.ProjectTemplate"
+let project = "VsTemplar"
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
@@ -34,7 +34,7 @@ let description = """
   provided Visual Studio project file (*.csproj, *.fsproj, etc.)"""
 
 // List of author names (for NuGet package)
-let authors = [ "Artur S" ]
+let authors = [ "artur-s" ]
 // Tags for your project (for NuGet package)
 let tags = "vstemplate template fsharp "
 
@@ -130,9 +130,13 @@ FinalTarget "CloseTestRunner" (fun _ ->
 //
 Target "MergeAssemblies" (fun _ ->
     CreateDir buildMergedDir
-
+    // TODO: merge only CommandLine project
     let toPack =
-        ["VsTemplar.dll"; "FSharp.Core.dll"; "FakeLib.dll"; "FSharp.Data.dll"; (*"FSharp.Data.TypeProviders.dll"; *) 
+        ["VsTemplar.dll"; 
+//         "FSharp.Core.dll"; 
+         "FakeLib.dll";
+         "FSharp.Data.dll"; 
+//         "FSharp.Data.TypeProviders.dll";
          "ICSharpCode.SharpZipLib.dll"; "Zlib.Portable.dll"]
         |> List.map (fun l -> buildDir @@ l)
         |> separated " "
@@ -214,7 +218,7 @@ Target "All" DoNothing
   ==> "CleanDocs"
 //  ==> "GenerateDocs"
 //  ==> "ReleaseDocs"
-  ==> "MergeAssemblies"
+//  ==> "MergeAssemblies"
   ==> "NuGet"
   ==> "Release"
 
