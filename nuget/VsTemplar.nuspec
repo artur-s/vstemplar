@@ -18,7 +18,17 @@
   </metadata>
    <files>
     <file src="..\bin\VsTemplar.dll" target="lib/net45" />
-	<file src="..\bin\VsTemplar.xml" target="lib/net45" />
-	<file src="..\bin\*.dll" target="tools" />
+	  <file src="..\bin\VsTemplar.xml" target="lib/net45" />
+	  <!--<file src="..\bin\*.dll" target="tools" />-->
+    <file src="..\bin\VsTemplar.dll" target="tools" />
+    <file src="..\bin\FakeLib.dll" target="tools" />
+    <file src="..\bin\FSharp.Core.dll" target="tools" />
+    <file src="..\bin\FSharp.Data.dll" target="tools" />
+    <file src="..\bin\FSharp.Data.TypeProviders.dll" target="tools" />
+    <file src="..\bin\FSharp.Compiler.Service.dll" target="tools" />
+    <file src="..\bin\ICSharpCode.SharpZipLib.dll" target="tools" />
+    <file src="..\bin\Microsoft.Web.XmlTransform.dll" target="tools" />
+    <file src="..\bin\Zlib.Portable.dll" target="tools" /> 
   </files> 
 </package>
+

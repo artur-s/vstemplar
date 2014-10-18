@@ -104,7 +104,7 @@ Target "RunTests" (fun _ ->
     ActivateFinalTarget "CloseTestRunner"
     
     { BaseDirectory = __SOURCE_DIRECTORY__
-      Includes = (!! (buildDir @@ "/*Tests.dll")) |> Seq.toList // testAssemblies
+      Includes = (!! ( (* "tests/*/bin/Debug"*) buildDir @@ "/*Tests.dll")) |> Seq.toList // testAssemblies
       Excludes = [] } 
     |> xUnit id
 )
