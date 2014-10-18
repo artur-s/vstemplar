@@ -1,153 +1,152 @@
-﻿// http://trelford.com/blog/post/F-XML-Comparison-(XElement-vs-XmlDocument-vs-XmlReaderXmlWriter-vs-Discriminated-Unions).aspx
-namespace VsTemplar
+﻿module VsTemplar.VsTemplate
 
-module VsTemplate =
-    open System
-    open System.IO
-    open Fake
-    open TemplateGeneration
+open System
+open System.IO
+open Fake
+open SingleProjectTemplate
+open MultiProjectTemplate
 
-    let CreateMetadataVsTemplateMetadata
-        (setParams:MetadataCreationParameters -> MetadataCreationParameters) =
-        
-        let defaults = { 
-            VsProjFileLocation = null
-            Description = null
-            Target = null
-            WizardTemplate = None} // []
-
-        let parameters = setParams defaults
-        let template = generateSingleProjectVsTemplate parameters
-        template.Save(parameters.Target)
-
+let CreateMetadataVsTemplateMetadata
+    (setParams:MetadataCreationParameters -> MetadataCreationParameters) =
     
-//    let CreateMetadataVsTemplateMetadataInterop (setParam:Func<MetadataCreationParameters,MetadataCreationParameters>) =
-//        CreateMetadataVsTemplateMetadata(setParam.Invoke)
+    let defaults = { 
+        VsProjFileLocation = null
+        Description = null
+        Target = null
+        WizardTemplate = None} // []
 
-    open VsTemplar
+    let parameters = setParams defaults
+    let template = generateSingleProjectVsTemplate parameters
+    template.Save(parameters.Target)
 
-    let ExportAsTemplate
-        (setParams:TemplateExportParameters -> TemplateExportParameters) =
 
-        /// in a project file replaces project name with a template parameter
-        let replaceProjectName parameter targetProgFile =
-            let csProjXmlNamespace = ["a","http://schemas.microsoft.com/developer/msbuild/2003"]
-            let csprojRootNamespaceXpath = "/a:Project/a:PropertyGroup/a:RootNamespace/text()"
-            let csprojAssemblyNameXpath = "/a:Project/a:PropertyGroup/a:AssemblyName/text()"
-            for xpath in [csprojRootNamespaceXpath;csprojAssemblyNameXpath] do
-                XmlPokeNS targetProgFile csProjXmlNamespace xpath parameter
+//  let CreateMetadataVsTemplateMetadataInterop (setParam:Func<MetadataCreationParameters,MetadataCreationParameters>) =
+//      CreateMetadataVsTemplateMetadata(setParam.Invoke)
 
-        let zipTemplateTo source destination = 
+open VsTemplar
+
+let ExportAsTemplate
+    (setParams:TemplateExportParameters -> TemplateExportParameters) =
+
+    /// in a project file replaces project name with a template parameter
+    let replaceProjectName parameter targetProgFile =
+        let csProjXmlNamespace = ["a","http://schemas.microsoft.com/developer/msbuild/2003"]
+        let csprojRootNamespaceXpath = "/a:Project/a:PropertyGroup/a:RootNamespace/text()"
+        let csprojAssemblyNameXpath = "/a:Project/a:PropertyGroup/a:AssemblyName/text()"
+        for xpath in [csprojRootNamespaceXpath;csprojAssemblyNameXpath] do
+            XmlPokeNS targetProgFile csProjXmlNamespace xpath parameter
+
+    let zipTemplateTo source destination = 
+
+        FileHelper.DeleteDirs (!! (source @@ @"**/bin/" ))
+        FileHelper.DeleteDirs (!! (source @@ @"**/obj/" ))
+
+        let tempZip = source + "/" + (Path.GetFileName destination)
+        printfn "tempZip: %s" tempZip
+        let files = !! (source @@ "**/*")
+        try
+            ZipHelper.Zip source tempZip files
+        with
+            | ex -> printf "exception when zipping files: %s" ex.Message
+
+        printfn "templates.zip destination: %s" destination
+        CopyFile destination tempZip
+
+    let defaults = {
+        SourceProjectDirectory = null
+        TargetDirectory = null
+        ProjectNameTemplateParameter = "$safeprojectname$"
+        Root = None
+        ChildWizard = None}
+
+    let validateParameters ps =
+        if String.IsNullOrWhiteSpace (ps.SourceProjectDirectory) then
+            invalidArg "SourceProjecDirectory" "Source project location cannot be empty"
+        ps
+
+    let parameters = defaults |> setParams |> validateParameters
+
+    let sourceProjectsDirs = 
+        // subdirectories containing VS project file: *.csproj, *.fsproj, *.vbproj
+        !! (parameters.SourceProjectDirectory @@ @"**/*.?sproj")
     
-            FileHelper.DeleteDirs (!! (source @@ @"**/bin/" ))
-            FileHelper.DeleteDirs (!! (source @@ @"**/obj/" ))
+    let progFileLocations = 
+        match sourceProjectsDirs |> List.ofSeq with
+        | [] -> invalidArg "setParams.SourceProjecDirectory" "Source project location does not contain any VS projects"
+        | locations -> locations
 
-            let tempZip = source + "/" + (Path.GetFileName destination)
-            printfn "tempZip: %s" tempZip
-            let files = !! (source @@ "**/*")
-            try
-                ZipHelper.Zip source tempZip files
-            with
-                | ex -> printf "exception when zipping files: %s" ex.Message
+    let dirPath filePath = Path.GetDirectoryName filePath
+    let fileName filePath = Path.GetFileName filePath
+    let extension file = Path.GetExtension file
 
-            printfn "templates.zip destination: %s" destination
-            CopyFile destination tempZip
+    let templatesDestination = 
+        match parameters.TargetDirectory with
+        | null -> parameters.SourceProjectDirectory
+        | tg when (extension tg).Length > 0 -> tg
+        //TODO: for single project templates, default name of zip file should be the same as project name        
+        | tg -> tg @@ "Template.zip"
 
-        let defaults = {
-            SourceProjectDirectory = null
-            TargetDirectory = null
-            ProjectNameTemplateParameter = "$safeprojectname$"
-            Root = None
-            ChildWizard = None}
+    let exportedTemplatesTempDir = sprintf "%s%s%A" (Path.GetTempPath()) "VsTemplar_" (Guid.NewGuid())
+    let templateFileName = "MyTemplate.vstemplate"
+    
+    for projFileLocation in progFileLocations do
 
-        let validateParameters ps =
-            if String.IsNullOrWhiteSpace (ps.SourceProjectDirectory) then
-                invalidArg "SourceProjecDirectory" "Source project location cannot be empty"
-            ps
+        let sourceProjectDir = dirPath projFileLocation
 
-        let parameters = defaults |> setParams |> validateParameters
+        // TODO: temp directory in current location
+        let targetDir = (exportedTemplatesTempDir @@ (fileName sourceProjectDir))
+        Directory.CreateDirectory targetDir |> ignore
+        let targetProgFileName = fileName projFileLocation
+        let targetProgFileLocation = targetDir @@ targetProgFileName
+    
+  
+        let copyProjectFiles sourceDir targetDir =
+            Fake.FileHelper.CopyDir targetDir sourceDir allFiles |> ignore
 
-        let sourceProjectsDirs = 
-            // subdirectories containing VS project file: *.csproj, *.fsproj, *.vbproj
-            !! (parameters.SourceProjectDirectory @@ @"**/*.?sproj")
-        
-        let progFileLocations = 
-            match sourceProjectsDirs |> List.ofSeq with
-            | [] -> invalidArg "setParams.SourceProjecDirectory" "Source project location does not contain any VS projects"
-            | locations -> locations
+        copyProjectFiles sourceProjectDir targetDir
 
-        let dirPath filePath = Path.GetDirectoryName filePath
-        let fileName filePath = Path.GetFileName filePath
-        let extension file = Path.GetExtension file
+        // check
+        let tempTarget = targetDir @@ templateFileName
+        tempTarget |> printfn "%s"
 
-        let templatesDestination = 
-            match parameters.TargetDirectory with
-            | null -> parameters.SourceProjectDirectory
-            | tg when (extension tg).Length > 0 -> tg
-            //TODO: for single project templates, default name of zip file should be the same as project name        
-            | tg -> tg @@ "Template.zip"
+        CreateMetadataVsTemplateMetadata (fun p -> {p with 
+                                                        VsProjFileLocation = projFileLocation
+                                                        Target = tempTarget
+                                                        WizardTemplate = parameters.ChildWizard})
 
-        let exportedTemplatesTempDir = sprintf "%s%s%A" (Path.GetTempPath()) "VsTemplar_" (Guid.NewGuid())
-        let templateFileName = "MyTemplate.vstemplate"
-        
-        for projFileLocation in progFileLocations do
+        if parameters.ProjectNameTemplateParameter <> null
+            then replaceProjectName parameters.ProjectNameTemplateParameter targetProgFileLocation
 
-            let sourceProjectDir = dirPath projFileLocation
+   
+    let templateSources = !! (exportedTemplatesTempDir @@ "*/") |> List.ofSeq
+    
+    // creating root template
+    if templateSources.Length > 1 then 
+        match parameters.Root with
+        | Some root ->
+            let projectsRelativeLocations = 
+                progFileLocations |> List.map (fun pl -> 
+                    let relativePath = (dirPath >> fileName) pl
+                    (relativePath, relativePath @@ templateFileName))
 
-            // TODO: temp directory in current location
-            let targetDir = (exportedTemplatesTempDir @@ (fileName sourceProjectDir))
-            Directory.CreateDirectory targetDir |> ignore
-            let targetProgFileName = fileName projFileLocation
-            let targetProgFileLocation = targetDir @@ targetProgFileName
-        
-      
-            let copyProjectFiles sourceDir targetDir =
-                Fake.FileHelper.CopyDir targetDir sourceDir allFiles |> ignore
+            let content = match root.Content with
+                          | ExplicitContent _  as explicit -> explicit 
+                          | InferredContent -> seq { for (name,location) in projectsRelativeLocations
+                                                      -> ProjectTemplateLink { Name = name; Location = location}}
+                                                   |> ExplicitContent
 
-            copyProjectFiles sourceProjectDir targetDir
+            let rootXml = generateRootVsTemplate {root with RootTemplate.Content = content } 
+            rootXml.Save(exportedTemplatesTempDir @@ "RootTemplate.vstemplate")
+        | _ -> ()
 
-            // check
-            let tempTarget = targetDir @@ templateFileName
-            tempTarget |> printfn "%s"
+    let templateSourceToZip = 
+        match templateSources with
+        | singleProject::[] -> singleProject
+        | _ -> exportedTemplatesTempDir
 
-            CreateMetadataVsTemplateMetadata (fun p -> {p with 
-                                                            VsProjFileLocation = projFileLocation
-                                                            Target = tempTarget
-                                                            WizardTemplate = parameters.ChildWizard})
+    // ensure destination folder
+    dirPath templatesDestination |> Directory.CreateDirectory |> ignore
+    
+    zipTemplateTo templateSourceToZip templatesDestination
 
-            if parameters.ProjectNameTemplateParameter <> null
-                then replaceProjectName parameters.ProjectNameTemplateParameter targetProgFileLocation
-
-       
-        let templateSources = !! (exportedTemplatesTempDir @@ "*/") |> List.ofSeq
-        
-        // creating root template
-        if templateSources.Length > 1 then 
-            match parameters.Root with
-            | Some root ->
-                let projectsRelativeLocations = 
-                    progFileLocations |> List.map (fun pl -> 
-                        let relativePath = (dirPath >> fileName) pl
-                        (relativePath, relativePath @@ templateFileName))
-
-                let content = match root.Content with
-                              | ExplicitContent _  as explicit -> explicit 
-                              | InferredContent -> seq { for (name,location) in projectsRelativeLocations
-                                                          -> ProjectTemplateLink { Name = name; Location = location}}
-                                                       |> ExplicitContent
-
-                let rootXml = generateRootVsTemplate {root with RootTemplate.Content = content } 
-                rootXml.Save(exportedTemplatesTempDir @@ "RootTemplate.vstemplate")
-            | _ -> ()
-
-        let templateSourceToZip = 
-            match templateSources with
-            | singleProject::[] -> singleProject
-            | _ -> exportedTemplatesTempDir
-
-        // ensure destination folder
-        dirPath templatesDestination |> Directory.CreateDirectory |> ignore
-        
-        zipTemplateTo templateSourceToZip templatesDestination
-
-    //TODO: clear after copying
+//TODO: clear after copying

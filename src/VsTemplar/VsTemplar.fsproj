@@ -57,7 +57,9 @@
     <Compile Include="SampleData.fs" />
     <Compile Include="XmlHelpers.fs" />
     <Compile Include="Model.fs" />
-    <Compile Include="TemplateGeneration.fs" />
+    <Compile Include="CommonTemplate.fs" />
+    <Compile Include="SingleProjectTemplate.fs" />
+    <Compile Include="MultiProjectTemplate.fs" />
     <Compile Include="VsTemplar.fsi" />
     <Compile Include="VsTemplar.fs" />
     <None Include="Run.fsx" />

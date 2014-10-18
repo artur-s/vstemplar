@@ -2,7 +2,8 @@
 
 open Xunit
 open VsTemplar
-open TemplateGeneration
+open CommonTemplate
+open MultiProjectTemplate
 open Xunit.Extensions
 open TestHelpers
 //open FsUnit

@@ -1,6 +1,6 @@
 ﻿module Run
 
-#r "../../packages/FAKE.Core.3.4.3/tools/FakeLib.dll"
+#r "../../packages/FAKE.Core/tools/FakeLib.dll"
 #r "./bin/VsTemplar.dll"
 
 open Fake
