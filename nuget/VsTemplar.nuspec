@@ -6,8 +6,8 @@
     <authors>@authors@</authors>
     <owners>@authors@</owners>
     <licenseUrl>http://unlicense.org/UNLICENSE</licenseUrl>
-    <!-- <projectUrl>https://github.com/fsprojects/FSharp.ProjectScaffold/</projectUrl> -->
-    <!-- <iconUrl>https://raw.github.com/fsharp/FSharp.ProjectScaffold/master/nuget/logo.png</iconUrl> -->
+    <!-- <projectUrl>https://github.com/artur-s/VsTemplar/</projectUrl> -->
+    <!-- <iconUrl>https://raw.github.com/artur-s/VsTemplar/master/nuget/logo.png</iconUrl> -->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>@summary@</summary>
     <description>@description@</description>
@@ -17,8 +17,8 @@
 		@dependencies@
   </metadata>
    <files>
-    <file src="..\bin\VsTemplar.dll" target="lib/net40" />
-		<file src="..\bin\VsTemplar.xml" target="lib/net40" />
-		<file src="..\bin\*.dll" target="tools" />
+    <file src="..\bin\VsTemplar.dll" target="lib/net45" />
+	<file src="..\bin\VsTemplar.xml" target="lib/net45" />
+	<file src="..\bin\*.dll" target="tools" />
   </files> 
 </package>

@@ -21,9 +21,9 @@ let generateSingleProjectVsTemplate (parameters:MetadataCreationParameters) =
     let destTemplate = Template.GetSample()
     let dest = Template.GetSample()
     let xNameThis name = destTemplate.XElement |> xNameDefNs name
+    let projectType = projectType parameters
 
     dest.TemplateContent.ProjectCollection.XElement.Remove()
-
 
     dest.TemplateData.XElement 
     |> setXElemValueNS (xNameThis "Name") projectName
@@ -31,19 +31,19 @@ let generateSingleProjectVsTemplate (parameters:MetadataCreationParameters) =
     |> setXElemValueNS (xNameThis "Description") ( match parameters.Description with
                                                     | null | "" -> sprintf "template generated from %s project" projectName
                                                     | d -> d)
-    |> setXElemValueNS (xNameThis "ProjectType") (projectType parameters)
+    |> setXElemValueNS (xNameThis "ProjectType") (projectType.ToString())
     |> ignore
 
 
     let project = dest.TemplateContent.Project;
     project.XElement.RemoveNodes()
 
-    let projFileName = (sprintf "%s.csproj" projectName)
+    let projFileName = projectFileName parameters //(sprintf "%s.%s" projectName (projectExtension projectType))
     project.XElement
     |> setXAttrValue "TargetFileName" projFileName
     |> setXAttrValue "File" projFileName
     |> ignore
-
+    
     let addProjectFile targetFileName (projectOrFolderElement:XElement) =
         let item = destTemplate.TemplateContent.Project.ProjectItems |> Seq.head |> (fun i -> new XElement(i.XElement))
                     |> setXAttrValue "TargetFileName" targetFileName

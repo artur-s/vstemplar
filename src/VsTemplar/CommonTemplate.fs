@@ -1,5 +1,6 @@
 ﻿module internal VsTemplar.CommonTemplate
 
+open System.IO
 open System.Xml.Linq
 open FSharp.Data
 open XmlHelpers
@@ -7,17 +8,25 @@ open XmlHelpers
 type CsProject = XmlProvider<SampleData.VsProject>
 type Template = XmlProvider<SampleData.VsTemplate>
 
+let projectFileName parameters =
+    Path.GetFileName parameters.VsProjFileLocation
+
 let projectType parameters =
-    match System.IO.Path.GetExtension parameters.VsProjFileLocation with
+    match Path.GetExtension parameters.VsProjFileLocation with
     | ext when ext.Length > 0 ->
         match ext with
         //TODO: ProjectType enum
-        | ".csproj" -> "CSharp"
-        | ".fsproj" -> "FSharp"
-        | ".vbproj" -> "VisualBasic"
+        | ".csproj" -> ProjectType.CSharp
+        | ".fsproj" -> ProjectType.FSharp
+        | ".vbproj" -> ProjectType.VisualBasic
         | _ -> failwith "Not supported project type"
     | _ -> failwith "Cannot determine Visual Studio project type"
 
+let projectExtension = function
+    | ProjectType.CSharp -> ".csproj"
+    | ProjectType.FSharp -> ".fsproj"
+    | ProjectType.VisualBasic -> ".vbproj"
+    | _ -> failwith "Not supported project extension"
 
 let setWizardExtension 
     (wizardParams:WizardTemplate option) 
