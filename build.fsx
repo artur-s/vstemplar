@@ -77,8 +77,6 @@ Target "AssemblyInfo" (fun _ ->
 // --------------------------------------------------------------------------------------
 // Clean build results & restore NuGet packages
 
-Target "RestorePackages" RestorePackages
-
 Target "Clean" (fun _ ->
     CleanDirs ["bin"; "temp"]
 )
@@ -90,15 +88,9 @@ Target "CleanDocs" (fun _ ->
 // --------------------------------------------------------------------------------------
 // Build library & test project
 
-//Target "Build" (fun _ ->
-//    !! solutionFile
-//    |> MSBuildRelease "" "Rebuild"
-//    |> ignore
-//)
 Target "Build" (fun _ ->
     { BaseDirectory = __SOURCE_DIRECTORY__
       Includes = [ solutionFile +       ".sln"
-//                   solutionFile + ".Tests.sln" 
                     ]
       Excludes = [] } 
     |> MSBuildRelease "bin" "Rebuild"
@@ -110,27 +102,24 @@ Target "Build" (fun _ ->
 
 Target "RunTests" (fun _ ->
     ActivateFinalTarget "CloseTestRunner"
-
+    
     { BaseDirectory = __SOURCE_DIRECTORY__
-      Includes = testAssemblies
+      Includes = (!! (buildDir @@ "/*Tests.dll")) |> Seq.toList // testAssemblies
       Excludes = [] } 
-    |> NUnit (fun p ->
-        { p with
-            DisableShadowCopy = true
-            TimeOut = TimeSpan.FromMinutes 20.
-            OutputFile = "TestResults.xml" })
+    |> xUnit id
 )
 
 FinalTarget "CloseTestRunner" (fun _ ->  
     ProcessHelper.killProcess "nunit-agent.exe"
 )
 
+
 // --------------------------------------------------------------------------------------
-// Build a NuGet package
+// Merge assemblies for command line tool
 //
+// TODO: merge only CommandLine project
 Target "MergeAssemblies" (fun _ ->
     CreateDir buildMergedDir
-    // TODO: merge only CommandLine project
     let toPack =
         ["VsTemplar.dll"; 
 //         "FSharp.Core.dll"; 
@@ -150,6 +139,9 @@ Target "MergeAssemblies" (fun _ ->
     if result <> 0 then failwithf "Error during ILRepack execution."
 )
 
+// --------------------------------------------------------------------------------------
+// Build a NuGet package
+//
 Target "NuGet" (fun _ ->
     // Format the description to fit on a single line (remove \r\n and double-spaces)
     let description = description.Replace("\r", "")
@@ -208,10 +200,9 @@ Target "Release" DoNothing
 Target "All" DoNothing
 
 "Clean"
-  ==> "RestorePackages"
   ==> "AssemblyInfo"
   ==> "Build"
-//  ==> "RunTests"
+  ==> "RunTests"
   ==> "All"
 
 "All" 
