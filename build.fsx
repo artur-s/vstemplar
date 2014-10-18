@@ -2,7 +2,7 @@
 // FAKE build script 
 // --------------------------------------------------------------------------------------
 
-#r @"packages/FAKE/tools/FakeLib.dll"
+#r @"packages/FAKE.Core/tools/FakeLib.dll"
 open Fake 
 open Fake.Git
 open Fake.AssemblyInfoFile
@@ -21,7 +21,7 @@ open System
 
 // The name of the project 
 // (used by attributes in AssemblyInfo, name of a NuGet package and directory in 'src')
-let project = "VsTemplar"//"FSharp.ProjectTemplate"
+let project = "VsTemplar"
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
@@ -34,7 +34,7 @@ let description = """
   provided Visual Studio project file (*.csproj, *.fsproj, etc.)"""
 
 // List of author names (for NuGet package)
-let authors = [ "Artur S" ]
+let authors = [ "artur-s" ]
 // Tags for your project (for NuGet package)
 let tags = "vstemplate template fsharp "
 
@@ -54,6 +54,7 @@ let gitName = "vstemplar"
 // END TODO: The rest of the file includes standard build steps 
 // --------------------------------------------------------------------------------------
 let buildDir = "./bin/"
+let buildMergedDir = buildDir @@ "merged"
 let nugetDir = "./nuget/"
 let packagesDir = "./packages/"
 
@@ -69,13 +70,12 @@ Target "AssemblyInfo" (fun _ ->
         Attribute.Product project
         Attribute.Description summary
         Attribute.Version release.AssemblyVersion
-        Attribute.FileVersion release.AssemblyVersion ] 
+        Attribute.FileVersion release.AssemblyVersion
+        Attribute.InternalsVisibleTo "VsTemplar.Tests" ] 
 )
 
 // --------------------------------------------------------------------------------------
 // Clean build results & restore NuGet packages
-
-Target "RestorePackages" RestorePackages
 
 Target "Clean" (fun _ ->
     CleanDirs ["bin"; "temp"]
@@ -91,7 +91,6 @@ Target "CleanDocs" (fun _ ->
 Target "Build" (fun _ ->
     { BaseDirectory = __SOURCE_DIRECTORY__
       Includes = [ solutionFile +       ".sln"
-//                   solutionFile + ".Tests.sln" 
                     ]
       Excludes = [] } 
     |> MSBuildRelease "bin" "Rebuild"
@@ -103,24 +102,46 @@ Target "Build" (fun _ ->
 
 Target "RunTests" (fun _ ->
     ActivateFinalTarget "CloseTestRunner"
-
+    
     { BaseDirectory = __SOURCE_DIRECTORY__
-      Includes = testAssemblies
+      Includes = (!! ( (* "tests/*/bin/Debug"*) buildDir @@ "/*Tests.dll")) |> Seq.toList // testAssemblies
       Excludes = [] } 
-    |> NUnit (fun p ->
-        { p with
-            DisableShadowCopy = true
-            TimeOut = TimeSpan.FromMinutes 20.
-            OutputFile = "TestResults.xml" })
+    |> xUnit id
 )
 
 FinalTarget "CloseTestRunner" (fun _ ->  
     ProcessHelper.killProcess "nunit-agent.exe"
 )
 
+
+// --------------------------------------------------------------------------------------
+// Merge assemblies for command line tool
+//
+// TODO: merge only CommandLine project
+Target "MergeAssemblies" (fun _ ->
+    CreateDir buildMergedDir
+    let toPack =
+        ["VsTemplar.dll"; 
+//         "FSharp.Core.dll"; 
+         "FakeLib.dll";
+         "FSharp.Data.dll"; 
+//         "FSharp.Data.TypeProviders.dll";
+         "ICSharpCode.SharpZipLib.dll"; "Zlib.Portable.dll"]
+        |> List.map (fun l -> buildDir @@ l)
+        |> separated " "
+
+    let result =
+        ExecProcess (fun info ->
+            info.FileName <- currentDirectory @@ "tools" @@ "ILRepack" @@ "ILRepack.exe"
+            info.Arguments <- sprintf "/internalize /verbose /lib:%s /ver:%s /out:%s %s" buildDir release.AssemblyVersion (buildMergedDir @@ "VsTemplar.dll") toPack
+            ) (TimeSpan.FromMinutes 5.)
+
+    if result <> 0 then failwithf "Error during ILRepack execution."
+)
+
 // --------------------------------------------------------------------------------------
 // Build a NuGet package
-
+//
 Target "NuGet" (fun _ ->
     // Format the description to fit on a single line (remove \r\n and double-spaces)
     let description = description.Replace("\r", "")
@@ -179,16 +200,16 @@ Target "Release" DoNothing
 Target "All" DoNothing
 
 "Clean"
-  ==> "RestorePackages"
   ==> "AssemblyInfo"
   ==> "Build"
-//  ==> "RunTests"
+  ==> "RunTests"
   ==> "All"
 
 "All" 
   ==> "CleanDocs"
 //  ==> "GenerateDocs"
 //  ==> "ReleaseDocs"
+//  ==> "MergeAssemblies"
   ==> "NuGet"
   ==> "Release"
 

@@ -12,8 +12,8 @@ module internal SampleData=
             <ProjectGuid>{006BC5D6-E8BF-40C9-9C9C-A55685624E43}</ProjectGuid>
             <OutputType>Library</OutputType>
             <AppDesignerFolder>Properties</AppDesignerFolder>
-            <RootNamespace>PutYourApiNameHere.ApiServices</RootNamespace>
-            <AssemblyName>PutYourApiNameHere.ApiServices</AssemblyName>
+            <RootNamespace>YourProjectNameGoesHere</RootNamespace>
+            <AssemblyName>YourProjectNameGoesHere</AssemblyName>
             <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
             <FileAlignment>512</FileAlignment>
             <TargetFrameworkProfile />
@@ -91,25 +91,25 @@ module internal SampleData=
             <Compile Include="GenericTransportMapper.cs" />
             <Compile Include="Properties\AssemblyInfo.cs" />
             <Compile Include="Security\NullUserContextProvider.cs" />
-            <Compile Include="TemplateResourceApiService.cs" />
+            <Compile Include="SampleResourceApiService.cs" />
           </ItemGroup>
-	        <ItemGroup>
-		        <Compile Include="anotherCompileItem.cs" />
-	        </ItemGroup>
-	        <ItemGroup>
-		        <Content Include="Global.asax" />
-		        <Content Include="Web.config">
-			        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		        </Content>
-		        <Content Include="Web.Debug.config">
-			        <DependentUpon>Web.config</DependentUpon>
-			        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		        </Content>
-		        <Content Include="Web.Release.config">
-			        <DependentUpon>Web.config</DependentUpon>
-			        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		        </Content>
-	        </ItemGroup>
+	      <ItemGroup>
+		    <Compile Include="anotherCompileItem.cs" />
+	      </ItemGroup>
+	      <ItemGroup>
+		    <Content Include="Global.asax" />
+		    <Content Include="Web.config">
+			    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		    </Content>
+		    <Content Include="Web.Debug.config">
+			    <DependentUpon>Web.config</DependentUpon>
+			    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		    </Content>
+		    <Content Include="Web.Release.config">
+			    <DependentUpon>Web.config</DependentUpon>
+			    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		    </Content>
+	      </ItemGroup>
 	        <ItemGroup>
 		        <Content Include="packages.config" />
 	        </ItemGroup>
@@ -118,13 +118,13 @@ module internal SampleData=
 		        <Folder Include="Scripts\" />
 	        </ItemGroup>
           <ItemGroup>
-            <ProjectReference Include="..\PutYourApiNameHere.IApiServices\PutYourApiNameHere.IApiServices.csproj">
+            <ProjectReference Include="..\ReferencedProject\ReferencedProject.csproj">
               <Project>{8B3EFAFB-02B6-4FD9-85C6-8F7BF9B9A5BA}</Project>
-              <Name>PutYourApiNameHere.IApiServices</Name>
+              <Name>ReferencedProject</Name>
             </ProjectReference>
-            <ProjectReference Include="..\PutYourApiNameHere.Model\PutYourApiNameHere.Model.csproj">
+            <ProjectReference Include="..\ReferencedProject2\ReferencedProject2.csproj">
               <Project>{F1BE99C5-041C-4366-9E74-0AD3632A8611}</Project>
-              <Name>PutYourApiNameHere.Model</Name>
+              <Name>ReferencedProject2</Name>
             </ProjectReference>
           </ItemGroup>
           <ItemGroup>
@@ -149,27 +149,28 @@ module internal SampleData=
         </Project>
 
     """
-    
+
     [<Literal>]
     let VsTemplate = 
         """
         <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
           <TemplateData>
-            <Name>PutYourApiNameHere.ApiServices</Name>
+            <Name>YourProjectNameGoesHere</Name>
             <Description>&lt;No description available&gt;</Description>
-            <ProjectType>CSharp</ProjectType>
+            <ProjectType>FSharp</ProjectType>
             <ProjectSubType>
             </ProjectSubType>
             <SortOrder>1000</SortOrder>
             <CreateNewFolder>true</CreateNewFolder>
-            <DefaultName>PutYourApiNameHere.ApiServices</DefaultName>
+            <DefaultName>YourProjectNameGoesHere</DefaultName>
             <ProvideDefaultName>true</ProvideDefaultName>
             <LocationField>Enabled</LocationField>
             <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
             <Icon>__TemplateIcon.ico</Icon>
+            <RequiredFrameworkVersion>4.5.3.1</RequiredFrameworkVersion>
           </TemplateData>
           <TemplateContent>
-            <Project TargetFileName="PutYourApiNameHere.ApiServices.csproj" File="PutYourApiNameHere.ApiServices.csproj" ReplaceParameters="true">
+            <Project TargetFileName="YourProjectNameGoesHere.csproj" File="YourProjectNameGoesHere.csproj" ReplaceParameters="true">
               <ProjectItem ReplaceParameters="true" TargetFileName="GenericTransportMapper.cs">GenericTransportMapper.cs</ProjectItem>
               <ProjectItem ReplaceParameters="true" TargetFileName="packages.config">packages.config</ProjectItem>
               <Folder Name="Properties" TargetFolderName="Properties">
@@ -180,10 +181,23 @@ module internal SampleData=
               </Folder>
               <ProjectItem ReplaceParameters="true" TargetFileName="TemplateResourceApiService.cs">TemplateResourceApiService.cs</ProjectItem>
             </Project>
+            <ProjectCollection>
+	         <ProjectTemplateLink ProjectName="$safeprojectname$.Model">PutYourApiNameHere.Model\MyTemplate.vstemplate</ProjectTemplateLink>
+	         <ProjectTemplateLink ProjectName="$safeprojectname$.Documentation">PutYourApiNameHere.Documentation\MyTemplate.vstemplate</ProjectTemplateLink>
+	         <ProjectTemplateLink ProjectName="$safeprojectname$.WebApi">PutYourApiNameHere.WebApi\MyTemplate.vstemplate</ProjectTemplateLink>
+             <SolutionFolder Name="Math Classes">
+                <ProjectTemplateLink ProjectName="MathClassLib1">MathClassLib1\MyTemplate.vstemplate</ProjectTemplateLink>
+                <ProjectTemplateLink ProjectName="MathClassLib2">MathClassLib2\MyTemplate.vstemplate</ProjectTemplateLink>
+            </SolutionFolder>
+            <SolutionFolder Name="a solution folder">
+            </SolutionFolder>
+            </ProjectCollection>
           </TemplateContent>
            <WizardExtension>
-            <Assembly>IQ.Platform.WebApi.Template.Wizard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c9a76f51a8a9555f</Assembly>
-            <FullClassName>IQ.Platform.WebApi.Template.Wizard.ChildWizard</FullClassName>
+            <Assembly>TemplateWizardAssemblyName, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c9a76f51a8a9555f</Assembly>
+            <FullClassName>TemplateWizardAssemblyName.Wizard.ChildWizard</FullClassName>
           </WizardExtension>
+          <WizardData>
+          </WizardData>
         </VSTemplate>
         """
