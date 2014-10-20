@@ -22,5 +22,5 @@
 #### 0.0.7-beta - March 29 2014
 * updated Fsharp.Data nuget package
 
-#### 0.1.0-develop - Octover 18 2014
+#### 0.1.1-develop - Octover 18 2014
 * multi-project template generation
