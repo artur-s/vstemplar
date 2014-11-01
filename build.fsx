@@ -102,16 +102,11 @@ Target "Build" (fun _ ->
 // Run the unit tests using test runner & kill test runner when complete
 
 Target "RunTests" (fun _ ->
-    ActivateFinalTarget "CloseTestRunner"
     
     { BaseDirectory = __SOURCE_DIRECTORY__
       Includes = (!! ( (* "tests/*/bin/Debug"*) buildDir @@ "/*Tests.dll")) |> Seq.toList // testAssemblies
       Excludes = [] } 
     |> xUnit id
-)
-
-FinalTarget "CloseTestRunner" (fun _ ->  
-    ProcessHelper.killProcess "nunit-agent.exe"
 )
 
 
@@ -165,7 +160,9 @@ Target "NuGet" (fun _ ->
             OutputPath = "bin"
             AccessKey = getBuildParamOrDefault "nugetkey" ""
             Publish = hasBuildParam "nugetkey"
-//            Dependencies = ["FSharp.Data", GetPackageVersion packagesDir "FSharp.Data"]
+            Dependencies = 
+               ["FSharp.Core.Microsoft.Signed", GetPackageVersion packagesDir "FSharp.Core.Microsoft.Signed"
+                "FSharp.Data", GetPackageVersion packagesDir "FSharp.Data"]
             })
         (nugetDir + project + ".nuspec")
 )

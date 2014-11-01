@@ -61,42 +61,6 @@
   </Target>
   -->
   <Import Project="$(SolutionDir)\.paket\paket.targets" />
-  <ItemGroup>
-    <Content Include="net40\Foq.Usage.fsx">
-      <Paket>True</Paket>
-    </Content>
-    <Content Include="net45\Foq.Usage.fsx">
-      <Paket>True</Paket>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="UnquoteAssertionsAliases.fs" />
-    <Compile Include="TestHelpers.fs" />
-    <Content Include="app.config" />
-    <Compile Include="TemplateGenerationTests.fs" />
-    <Compile Include="CreateVsTemplateMetadataTests.fs" />
-    <Compile Include="ExportAsTemplateTests.fs" />
-    <Content Include="paket.references" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="FSharp.Data.TypeProviders, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="mscorlib" />
-    <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <ProjectReference Include="..\..\src\VsTemplar\VsTemplar.fsproj">
-      <Name>VsTemplar</Name>
-      <Project>{f496d7e3-bc0f-449f-b3b7-9f1b73278c87}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="..\..\.paket\paket.targets" />
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework'">
@@ -406,4 +370,36 @@
       </ItemGroup>
     </When>
   </Choose>
+  <ItemGroup>
+    <Content Include="net40\Foq.Usage.fsx">
+      <Paket>True</Paket>
+    </Content>
+    <Content Include="net45\Foq.Usage.fsx">
+      <Paket>True</Paket>
+    </Content>
+    <Compile Include="UnquoteAssertionsAliases.fs" />
+    <Compile Include="TestHelpers.fs" />
+    <Content Include="app.config" />
+    <Compile Include="TemplateGenerationTests.fs" />
+    <Compile Include="CreateVsTemplateMetadataTests.fs" />
+    <Compile Include="ExportAsTemplateTests.fs" />
+    <Content Include="paket.references" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="FSharp.Core">
+      <HintPath>..\..\packages\FSharp.Core.Microsoft.Signed\lib\net45\FSharp.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <ProjectReference Include="..\..\src\VsTemplar\VsTemplar.fsproj">
+      <Name>VsTemplar</Name>
+      <Project>{f496d7e3-bc0f-449f-b3b7-9f1b73278c87}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

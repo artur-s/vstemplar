@@ -10,3 +10,4 @@ nuget AutoFixture.AutoFoq
 nuget AutoFixture.xUnit
 nuget AutoFixture 3.20.4
 nuget xunit.runners
+nuget FSharp.Core.Microsoft.Signed
