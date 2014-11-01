@@ -1,3 +1,5 @@
+#### 0.1.2-develop - November 1 2014
+* Clean up dependencies
 
 #### 0.1.1-develop - Octover 18 2014
 * multi-project template generation
