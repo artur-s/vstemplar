@@ -1,8 +1,6 @@
-FSharp.Core.Microsoft.Signed
+FSharp.Core
 FSharp.Data
 Unquote
 xunit
-
 AutoFixture.AutoFoq
-
 AutoFixture.xUnit
